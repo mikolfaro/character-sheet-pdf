@@ -1,21 +1,22 @@
 import './style.css';
-import Pf2, {
-    AbilityScores,
-    ArmorClass,
-    HitPoints,
-    Lore,
-    Perception,
-    SavingThrow,
-    Skill,
-    Strike,
-    WeaponProficiencies
-} from './Pf2';
+import Pf2 from './Pf2';
 import Proficiency from "./Pf2/Proficiency";
 import Ability from "./Pf2/Ability";
+import Skill from "./Pf2/Skill";
+import Lore from "./Pf2/Lore";
+import AbilityScores from "./Pf2/AbilityScore";
+import ArmorClass from "./Pf2/ArmorClass";
+import SavingThrow from "./Pf2/SavingThrows";
+import HitPoints from "./Pf2/HitPoints";
+import Perception from "./Pf2/Perception";
+import Strike from "./Pf2/Strike";
+import WeaponProficiencies from "./Pf2/WeaponProficiencies";
 
 async function init() {
     const object: HTMLObjectElement = <HTMLObjectElement>document.getElementById('pdf');
     const pdf = await Pf2.create();
+
+    // First page
 
     pdf.characterName = 'Ugo';
     pdf.playerName = 'Mikol';
@@ -69,22 +70,24 @@ async function init() {
             '3D12', '+12', 'S', ['1d6 electricity']
         ),
     ];
-
     pdf.rangedStrikes = [
         new Strike(
             'Longbow', Ability.DEX, Proficiency.M,
             '1d8', '+6', 'S', [], ['Range 100ft']
         ),
     ];
-
     pdf.weaponProficiencies = new WeaponProficiencies(Proficiency.M, Proficiency.M, new Map([
         ['Unarmed', Proficiency.M],
     ]));
 
     pdf.languages = ['Common', 'Draconic', 'Thien'];
 
+    // // Second page
+    // pdf.classFeats = [
+    //
+    // ];
+
     pdf.dataUri().then((data) => {
-        console.log(data);
         object.setAttribute('data', data);
     });
 }
