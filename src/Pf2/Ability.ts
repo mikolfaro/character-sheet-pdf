@@ -1,4 +1,4 @@
-export enum Ability {
+enum Ability {
     STR = 'STR',
     DEX = 'DEX',
     CON = 'CON',

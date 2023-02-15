@@ -1,4 +1,4 @@
-export enum Proficiency {
+enum Proficiency {
     U = 'U',
     T = 'T',
     E = 'E',
@@ -6,7 +6,7 @@ export enum Proficiency {
     L = 'L',
 }
 
-export namespace Proficiency {
+namespace Proficiency {
     const VALUES = {
         U: 0,
         T: 2,
