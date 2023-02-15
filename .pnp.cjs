@@ -30,6 +30,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["css-loader", "virtual:1086b7a996d64fea88d55f744fc4512800e0207309f8dcff13e41c93e2ec62cd6bd281437a0cd882bad4df36b3e4f7b11cc4d32fc333e912014c872e93dfdf5f#npm:6.7.3"],\
             ["html-webpack-plugin", "virtual:1086b7a996d64fea88d55f744fc4512800e0207309f8dcff13e41c93e2ec62cd6bd281437a0cd882bad4df36b3e4f7b11cc4d32fc333e912014c872e93dfdf5f#npm:5.5.0"],\
+            ["pdf-lib", "npm:1.17.1"],\
             ["style-loader", "virtual:1086b7a996d64fea88d55f744fc4512800e0207309f8dcff13e41c93e2ec62cd6bd281437a0cd882bad4df36b3e4f7b11cc4d32fc333e912014c872e93dfdf5f#npm:3.3.1"],\
             ["ts-loader", "virtual:1086b7a996d64fea88d55f744fc4512800e0207309f8dcff13e41c93e2ec62cd6bd281437a0cd882bad4df36b3e4f7b11cc4d32fc333e912014c872e93dfdf5f#npm:9.4.2"],\
             ["typescript", "patch:typescript@npm%3A4.9.5#~builtin<compat/typescript>::version=4.9.5&hash=23ec76"],\
@@ -146,6 +147,26 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@npmcli/move-file", "npm:2.0.1"],\
             ["mkdirp", "npm:1.0.4"],\
             ["rimraf", "npm:3.0.2"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["@pdf-lib/standard-fonts", [\
+        ["npm:1.0.0", {\
+          "packageLocation": "./.yarn/cache/@pdf-lib-standard-fonts-npm-1.0.0-963255903e-7dc629b838.zip/node_modules/@pdf-lib/standard-fonts/",\
+          "packageDependencies": [\
+            ["@pdf-lib/standard-fonts", "npm:1.0.0"],\
+            ["pako", "npm:1.0.11"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["@pdf-lib/upng", [\
+        ["npm:1.0.1", {\
+          "packageLocation": "./.yarn/cache/@pdf-lib-upng-npm-1.0.1-b6cf54efaf-acd8ac0974.zip/node_modules/@pdf-lib/upng/",\
+          "packageDependencies": [\
+            ["@pdf-lib/upng", "npm:1.0.1"],\
+            ["pako", "npm:1.0.11"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -1110,6 +1131,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["character-sheet-pdf", "workspace:."],\
             ["css-loader", "virtual:1086b7a996d64fea88d55f744fc4512800e0207309f8dcff13e41c93e2ec62cd6bd281437a0cd882bad4df36b3e4f7b11cc4d32fc333e912014c872e93dfdf5f#npm:6.7.3"],\
             ["html-webpack-plugin", "virtual:1086b7a996d64fea88d55f744fc4512800e0207309f8dcff13e41c93e2ec62cd6bd281437a0cd882bad4df36b3e4f7b11cc4d32fc333e912014c872e93dfdf5f#npm:5.5.0"],\
+            ["pdf-lib", "npm:1.17.1"],\
             ["style-loader", "virtual:1086b7a996d64fea88d55f744fc4512800e0207309f8dcff13e41c93e2ec62cd6bd281437a0cd882bad4df36b3e4f7b11cc4d32fc333e912014c872e93dfdf5f#npm:3.3.1"],\
             ["ts-loader", "virtual:1086b7a996d64fea88d55f744fc4512800e0207309f8dcff13e41c93e2ec62cd6bd281437a0cd882bad4df36b3e4f7b11cc4d32fc333e912014c872e93dfdf5f#npm:9.4.2"],\
             ["typescript", "patch:typescript@npm%3A4.9.5#~builtin<compat/typescript>::version=4.9.5&hash=23ec76"],\
@@ -3264,6 +3286,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["pako", [\
+        ["npm:1.0.11", {\
+          "packageLocation": "./.yarn/cache/pako-npm-1.0.11-b8f1b69d3e-1be2bfa1f8.zip/node_modules/pako/",\
+          "packageDependencies": [\
+            ["pako", "npm:1.0.11"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["param-case", [\
         ["npm:3.0.4", {\
           "packageLocation": "./.yarn/cache/param-case-npm-3.0.4-cfb242ad97-b34227fd0f.zip/node_modules/param-case/",\
@@ -3336,6 +3367,19 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./.yarn/cache/path-to-regexp-npm-0.1.7-2605347373-69a14ea24d.zip/node_modules/path-to-regexp/",\
           "packageDependencies": [\
             ["path-to-regexp", "npm:0.1.7"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["pdf-lib", [\
+        ["npm:1.17.1", {\
+          "packageLocation": "./.yarn/cache/pdf-lib-npm-1.17.1-131ca75702-0dae766f23.zip/node_modules/pdf-lib/",\
+          "packageDependencies": [\
+            ["pdf-lib", "npm:1.17.1"],\
+            ["@pdf-lib/standard-fonts", "npm:1.0.0"],\
+            ["@pdf-lib/upng", "npm:1.0.1"],\
+            ["pako", "npm:1.0.11"],\
+            ["tslib", "npm:1.14.1"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -4326,6 +4370,13 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["tslib", [\
+        ["npm:1.14.1", {\
+          "packageLocation": "./.yarn/cache/tslib-npm-1.14.1-102499115e-dbe628ef87.zip/node_modules/tslib/",\
+          "packageDependencies": [\
+            ["tslib", "npm:1.14.1"]\
+          ],\
+          "linkType": "HARD"\
+        }],\
         ["npm:2.5.0", {\
           "packageLocation": "./.yarn/cache/tslib-npm-2.5.0-bb364efebd-ae3ed5f9ce.zip/node_modules/tslib/",\
           "packageDependencies": [\
