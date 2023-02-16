@@ -12,6 +12,7 @@ import HitPoints from "./HitPoints";
 import Perception from "./Perception";
 import WeaponProficiencies from "./WeaponProficiencies";
 import Strike from "./Strike";
+import Feat from "./Feat";
 
 export default class Pf2 {
     pdfDoc: PDFDocument;
@@ -270,6 +271,288 @@ export default class Pf2 {
 
     public set languages(value: string[]) {
         this.setTextField('LANGUAGES', this.formatList(value));
+    }
+
+    public set ancestryFeat1(value: Feat[] | Feat) {
+        const values = Array.isArray(value) ? value : [value];
+        const names = values.map(value => value.name).sort();
+        this.setTextField(`AF_1`, this.formatList(names));
+    }
+
+    public set ancestryFeatS1(value: Feat[] | Feat) {
+        const values = Array.isArray(value) ? value : [value];
+        const names = values.map(value => value.name).sort();
+        this.setTextField(`AF_S1`, this.formatList(names));
+    }
+
+    public set heritageFeat1(value: Feat[] | Feat) {
+        const values = Array.isArray(value) ? value : [value];
+        const names = values.map(value => value.name).sort();
+        this.setTextField(`AF_H1`, this.formatList(names));
+    }
+
+    public set ancestryFeat5(value: Feat[] | Feat) {
+        const values = Array.isArray(value) ? value : [value];
+        const names = values.map(value => value.name).sort();
+        this.setTextField(`AF_5`, this.formatList(names));
+    }
+
+    public set ancestryFeat9(value: Feat[] | Feat) {
+        const values = Array.isArray(value) ? value : [value];
+        const names = values.map(value => value.name).sort();
+        this.setTextField(`AF_9`, this.formatList(names));
+    }
+
+    public set ancestryFeat13(value: Feat[] | Feat) {
+        const values = Array.isArray(value) ? value : [value];
+        const names = values.map(value => value.name).sort();
+        this.setTextField(`AF_13`, this.formatList(names));
+    }
+
+    public set ancestryFeat17(value: Feat[] | Feat) {
+        const values = Array.isArray(value) ? value : [value];
+        const names = values.map(value => value.name).sort();
+        this.setTextField(`AF_17`, this.formatList(names));
+    }
+
+    public set skillFeatB(value: Feat[] | Feat) {
+        const values = Array.isArray(value) ? value : [value];
+        const names = values.map(value => value.name).sort();
+        this.setTextField(`SF_B`, this.formatList(names));
+    }
+
+    public set skillFeat2(value: Feat[] | Feat) {
+        const values = Array.isArray(value) ? value : [value];
+        const names = values.map(value => value.name).sort();
+        this.setTextField(`SF_2`, this.formatList(names));
+    }
+
+    public set skillFeat4(value: Feat[] | Feat) {
+        const values = Array.isArray(value) ? value : [value];
+        const names = values.map(value => value.name).sort();
+        this.setTextField(`SF_4`, this.formatList(names));
+    }
+
+    public set skillFeat6(value: Feat[] | Feat) {
+        const values = Array.isArray(value) ? value : [value];
+        const names = values.map(value => value.name).sort();
+        this.setTextField(`SF_6`, this.formatList(names));
+    }
+
+    public set skillFeat8(value: Feat[] | Feat) {
+        const values = Array.isArray(value) ? value : [value];
+        const names = values.map(value => value.name).sort();
+        this.setTextField(`SF_8`, this.formatList(names));
+    }
+
+    public set skillFeat10(value: Feat[] | Feat) {
+        const values = Array.isArray(value) ? value : [value];
+        const names = values.map(value => value.name).sort();
+        this.setTextField(`SF_10`, this.formatList(names));
+    }
+
+    public set skillFeat12(value: Feat[] | Feat) {
+        const values = Array.isArray(value) ? value : [value];
+        const names = values.map(value => value.name).sort();
+        this.setTextField(`SF_12`, this.formatList(names));
+    }
+
+    public set skillFeat14(value: Feat[] | Feat) {
+        const values = Array.isArray(value) ? value : [value];
+        const names = values.map(value => value.name).sort();
+        this.setTextField(`SF_14`, this.formatList(names));
+    }
+
+    public set skillFeat16(value: Feat[] | Feat) {
+        const values = Array.isArray(value) ? value : [value];
+        const names = values.map(value => value.name).sort();
+        this.setTextField(`SF_16`, this.formatList(names));
+    }
+
+    public set skillFeat18(value: Feat[] | Feat) {
+        const values = Array.isArray(value) ? value : [value];
+        const names = values.map(value => value.name).sort();
+        this.setTextField(`SF_18`, this.formatList(names));
+    }
+
+    public set skillFeat20(value: Feat[] | Feat) {
+        const values = Array.isArray(value) ? value : [value];
+        const names = values.map(value => value.name).sort();
+        this.setTextField(`SF_20`, this.formatList(names));
+    }
+
+    public set generalFeat3(value: Feat[] | Feat) {
+        const values = Array.isArray(value) ? value : [value];
+        const names = values.map(value => value.name).sort();
+        this.setTextField(`GF_3`, this.formatList(names));
+    }
+
+    public set generalFeat7(value: Feat[] | Feat) {
+        const values = Array.isArray(value) ? value : [value];
+        const names = values.map(value => value.name).sort();
+        this.setTextField(`GF_7`, this.formatList(names));
+    }
+
+    public set generalFeat11(value: Feat[] | Feat) {
+        const values = Array.isArray(value) ? value : [value];
+        const names = values.map(value => value.name).sort();
+        this.setTextField(`GF_11`, this.formatList(names));
+    }
+
+    public set generalFeat15(value: Feat[] | Feat) {
+        const values = Array.isArray(value) ? value : [value];
+        const names = values.map(value => value.name).sort();
+        this.setTextField(`GF_15`, this.formatList(names));
+    }
+
+    public set generalFeat19(value: Feat[] | Feat) {
+        const values = Array.isArray(value) ? value : [value];
+        const names = values.map(value => value.name).sort();
+        this.setTextField(`GF_19`, this.formatList(names));
+    }
+
+    public set classFeat1(value: Feat[] | Feat) {
+        const values = Array.isArray(value) ? value : [value];
+        const names = values.map(value => value.name).sort();
+        this.setTextField(`CF_1`, this.formatList(names));
+    }
+
+    public set classFeat2(value: Feat[] | Feat) {
+        const values = Array.isArray(value) ? value : [value];
+        const names = values.map(value => value.name).sort();
+        this.setTextField(`CF_2`, this.formatList(names));
+    }
+
+    public set classFeat4(value: Feat[] | Feat) {
+        const values = Array.isArray(value) ? value : [value];
+        const names = values.map(value => value.name).sort();
+        this.setTextField(`CF_4`, this.formatList(names));
+    }
+
+    public set classFeat6(value: Feat[] | Feat) {
+        const values = Array.isArray(value) ? value : [value];
+        const names = values.map(value => value.name).sort();
+        this.setTextField(`CF_6`, this.formatList(names));
+    }
+
+    public set classFeat8(value: Feat[] | Feat) {
+        const values = Array.isArray(value) ? value : [value];
+        const names = values.map(value => value.name).sort();
+        this.setTextField(`CF_8`, this.formatList(names));
+    }
+
+    public set classFeat10(value: Feat[] | Feat) {
+        const values = Array.isArray(value) ? value : [value];
+        const names = values.map(value => value.name).sort();
+        this.setTextField(`CF_10`, this.formatList(names));
+    }
+
+    public set classFeat12(value: Feat[] | Feat) {
+        const values = Array.isArray(value) ? value : [value];
+        const names = values.map(value => value.name).sort();
+        this.setTextField(`CF_12`, this.formatList(names));
+    }
+
+    public set classFeat14(value: Feat[] | Feat) {
+        const values = Array.isArray(value) ? value : [value];
+        const names = values.map(value => value.name).sort();
+        this.setTextField(`CF_14`, this.formatList(names));
+    }
+
+    public set classFeat16(value: Feat[] | Feat) {
+        const values = Array.isArray(value) ? value : [value];
+        const names = values.map(value => value.name).sort();
+        this.setTextField(`CF_16`, this.formatList(names));
+    }
+
+    public set classFeat18(value: Feat[] | Feat) {
+        const values = Array.isArray(value) ? value : [value];
+        const names = values.map(value => value.name).sort();
+        this.setTextField(`CF_18`, this.formatList(names));
+    }
+
+    public set classFeat20(value: Feat[] | Feat) {
+        const values = Array.isArray(value) ? value : [value];
+        const names = values.map(value => value.name).sort();
+        this.setTextField(`CF_20`, this.formatList(names));
+    }
+
+    public set bonusFeats(value: Feat[] | Feat) {
+        const values = Array.isArray(value) ? value : [value];
+        const names = values.map(value => value.name).sort();
+
+        const half = names.length / 2 + 1;
+        const name1 = names.slice(0, half)
+        const name2 = names.slice(half);
+
+        this.setTextField(`BF_1`, this.formatList(name1));
+        this.setTextField(`BF_2`, this.formatList(name2));
+    }
+
+    public set classFeature1_1(value: Feat[] | Feat) {
+        const values = Array.isArray(value) ? value : [value];
+        const names = values.map(value => value.name).sort();
+        this.setTextField(`FEATURE_1_1`, this.formatList(names));
+    }
+
+    public set classFeature1_2(value: Feat[] | Feat) {
+        const values = Array.isArray(value) ? value : [value];
+        const names = values.map(value => value.name).sort();
+        this.setTextField(`FEATURE_1_2`, this.formatList(names));
+    }
+
+    public set classFeature3(value: Feat[] | Feat) {
+        const values = Array.isArray(value) ? value : [value];
+        const names = values.map(value => value.name).sort();
+        this.setTextField(`FEATURE_3`, this.formatList(names));
+    }
+
+    public set classFeature5(value: Feat[] | Feat) {
+        const values = Array.isArray(value) ? value : [value];
+        const names = values.map(value => value.name).sort();
+        this.setTextField(`FEATURE_5`, this.formatList(names));
+    }
+
+    public set classFeature7(value: Feat[] | Feat) {
+        const values = Array.isArray(value) ? value : [value];
+        const names = values.map(value => value.name).sort();
+        this.setTextField(`FEATURE_7`, this.formatList(names));
+    }
+
+    public set classFeature9(value: Feat[] | Feat) {
+        const values = Array.isArray(value) ? value : [value];
+        const names = values.map(value => value.name).sort();
+        this.setTextField(`FEATURE_9`, this.formatList(names));
+    }
+
+    public set classFeature11(value: Feat[] | Feat) {
+        const values = Array.isArray(value) ? value : [value];
+        const names = values.map(value => value.name).sort();
+        this.setTextField(`FEATURE_11`, this.formatList(names));
+    }
+
+    public set classFeature13(value: Feat[] | Feat) {
+        const values = Array.isArray(value) ? value : [value];
+        const names = values.map(value => value.name).sort();
+        this.setTextField(`FEATURE_13`, this.formatList(names));
+    }
+
+    public set classFeature15(value: Feat[] | Feat) {
+        const values = Array.isArray(value) ? value : [value];
+        const names = values.map(value => value.name).sort();
+        this.setTextField(`FEATURE_15`, this.formatList(names));
+    }
+
+    public set classFeature17(value: Feat[] | Feat) {
+        const values = Array.isArray(value) ? value : [value];
+        const names = values.map(value => value.name).sort();
+        this.setTextField(`FEATURE_17`, this.formatList(names));
+    }
+
+    public set classFeature19(value: Feat[] | Feat) {
+        const values = Array.isArray(value) ? value : [value];
+        const names = values.map(value => value.name).sort();
+        this.setTextField(`FEATURE_19`, this.formatList(names));
     }
 
     public dataUri(): Promise<string> {

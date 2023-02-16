@@ -83,9 +83,71 @@ async function init() {
     pdf.languages = ['Common', 'Draconic', 'Thien'];
 
     // // Second page
-    // pdf.classFeats = [
-    //
-    // ];
+    pdf.ancestryFeatS1 = {name: 'Versatile Human'};
+    pdf.heritageFeat1 = {name: 'Fleet'};
+    pdf.ancestryFeat1 = {name: 'Natural Ambition'};
+    pdf.ancestryFeat5 = {name: 'Haught Obstinacy'};
+    pdf.ancestryFeat9 = {name: 'Group Aid'};
+    pdf.ancestryFeat13 = {name: 'Bounce Back'};
+    pdf.ancestryFeat17 = {name: 'Heroic Presence'};
+
+    pdf.classFeat1 = {name: 'Raging Intimidation'};
+    pdf.classFeat2 = {name: 'Sudden Charge'};
+    pdf.classFeat4 = {name: 'Swipe'};
+    pdf.classFeat6 = {name: 'Dragon\'s Rage Breath'};
+    pdf.classFeat8 = {name: 'Scouring Rage'};
+    pdf.classFeat10 = {name: 'Terrifying Howl'};
+    pdf.classFeat12 = {name: 'Dragon\'s Rage Wings'};
+    pdf.classFeat14 = {name: 'Unbalancing Sweep'};
+    pdf.classFeat16 = {name: 'Dragon Transformation'};
+    pdf.classFeat18 = {name: 'Brutal Critical'};
+    pdf.classFeat20 = {name: 'Unstoppable Juggernaut'};
+
+    pdf.skillFeatB = {name: 'Cat Fall'};
+    pdf.skillFeat2 = {name: 'Titan Wrestler'};
+    pdf.skillFeat4 = {name: 'Intimidating Prowess'};
+    pdf.skillFeat6 = {name: 'Terrifying Resistance'};
+    pdf.skillFeat8 = {name: 'Battle Cry'};
+    pdf.skillFeat10 = {name: 'Terrified Retreat'};
+    pdf.skillFeat12 = {name: 'Assurance - Stealth'};
+    pdf.skillFeat14 = {name: 'Assurance - Diplomacy'};
+    pdf.skillFeat16 = {name: 'Group Coercion'};
+    pdf.skillFeat18 = {name: 'Aerobatics Mastery'};
+    pdf.skillFeat20 = {name: 'Additional Lore - Dragon Lore'};
+
+    pdf.generalFeat3 = {name: 'Canny Acumen - Reflex'};
+    pdf.generalFeat7 = {name: 'Toughness'};
+    pdf.generalFeat11 = {name: 'Incredible Initiative'};
+    pdf.generalFeat15 = {name: 'Feather Step'};
+    pdf.generalFeat19 = {name: 'Incredible Investiture'};
+
+    pdf.bonusFeats = [
+        {name: 'Draconic Arrogance'},
+        {name: 'Opportunist'},
+        {name: 'Basic Maneuver'},
+        {name: 'Power Attack'},
+        {name: 'Furious Focus'},
+        {name: 'Fighter Dedication'},
+        {name: 'Advanced Maneuver'},
+        {name: 'Lunge'},
+        {name: 'Knockdown'},
+        {name: 'Shatter Defences'},
+        {name: 'Positioning Assault'},
+        {name: 'Felling Strike'},
+        {name: 'Combat Reflexes'},
+    ];
+
+    pdf.classFeature1_1 = {name: 'Rage'};
+    pdf.classFeature1_2 = {name: 'Instinct - Dragon'};
+    pdf.classFeature3 = {name: 'Deny Advantage'};
+    pdf.classFeature5 = {name: 'Brutality'};
+    pdf.classFeature7 = {name: 'Weapon Specialization'};
+    pdf.classFeature9 = {name: 'Lightning Reflexes'};
+    pdf.classFeature11 = {name: 'Mighty Rage'};
+    pdf.classFeature13 = {name: 'Greater Juggernaut, Medium Armor Expertise, Weapon Fury'};
+    pdf.classFeature15 = {name: 'Greater Weapon Specialization, Indomitable Will'};
+    pdf.classFeature17 = {name: 'Heightened Senses, Quick Rage'};
+    pdf.classFeature19 = {name: 'Armor Of Fury, Devastator'};
 
     pdf.dataUri().then((data) => {
         object.setAttribute('data', data);
