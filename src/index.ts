@@ -83,17 +83,17 @@ async function init() {
     pdf.languages = ['Common', 'Draconic', 'Thien'];
 
     // // Second page
-    pdf.ancestryFeatS1 = {name: 'Versatile Human'};
-    pdf.heritageFeat1 = {name: 'Fleet'};
-    pdf.ancestryFeat1 = {name: 'Natural Ambition'};
-    pdf.ancestryFeat5 = {name: 'Haught Obstinacy'};
+    pdf.ancestryFeatS1 = {name: 'Versatile Human', description: 'Humanity’s versatility and ambition have fueled its ascendance to be the most common ancestry in most nations throughout the world. Select a general feat of your choice for which you meet the prerequisites.'};
+    pdf.heritageFeat1 = {name: 'Fleet', description: 'You move more quickly on foot. Your Speed increases by 5 feet.'};
+    pdf.ancestryFeat1 = {name: 'Natural Ambition', description: 'You were raised to be ambitious and always reach for the stars, leading you to progress quickly in your chosen field. You gain a 1st-level class feat for your class.'};
+    pdf.ancestryFeat5 = {name: 'Haught Obstinacy', description: 'Your powerful ego makes it harder for others to order you around. If you roll a success on a saving throw against a mental effect that attempts to directly control your actions, you critically succeed instead. If a creature rolls a failure on a check to Coerce you using Intimidation, it gets a critical failure instead (so it can’t try to Coerce you again for 1 week).'};
     pdf.ancestryFeat9 = {name: 'Group Aid'};
     pdf.ancestryFeat13 = {name: 'Bounce Back'};
     pdf.ancestryFeat17 = {name: 'Heroic Presence'};
 
-    pdf.classFeat1 = {name: 'Raging Intimidation'};
-    pdf.classFeat2 = {name: 'Sudden Charge'};
-    pdf.classFeat4 = {name: 'Swipe'};
+    pdf.classFeat1 = {name: 'Raging Intimidation', description: 'Your fury fills your foes with fear. While you are raging, your Demoralize and Scare to Death actions gain the rage trait, allowing you to use them while raging. As soon as you meet the prerequisites for the skill feats Intimidating Glare and Scare to Death, you gain these feats.'};
+    pdf.classFeat2 = {name: 'Sudden Charge', description: 'With a quick sprint, you dash up to your foe and swing. Stride twice. If you end your movement within melee reach of at least one enemy, you can make a melee Strike against that enemy. You can use Sudden Charge while Burrowing, Climbing, Flying, or Swimming instead of Striding if you have the corresponding movement type.'};
+    pdf.classFeat4 = {name: 'Swipe', description: 'You make a wide, arcing swing. Make a single melee Strike and compare the attack roll result to the ACs of up to two foes, each of whom must be within your melee reach and adjacent to the other.'};
     pdf.classFeat6 = {name: 'Dragon\'s Rage Breath'};
     pdf.classFeat8 = {name: 'Scouring Rage'};
     pdf.classFeat10 = {name: 'Terrifying Howl'};
@@ -104,8 +104,8 @@ async function init() {
     pdf.classFeat20 = {name: 'Unstoppable Juggernaut'};
 
     pdf.skillFeatB = {name: 'Cat Fall'};
-    pdf.skillFeat2 = {name: 'Titan Wrestler'};
-    pdf.skillFeat4 = {name: 'Intimidating Prowess'};
+    pdf.skillFeat2 = {name: 'Titan Wrestler', description: 'You can attempt to Disarm, Grapple, Shove, or Trip creatures up to two sizes larger than you, or up to three sizes larger than you if you’re legendary in Athletics.'};
+    pdf.skillFeat4 = {name: 'Intimidating Prowess', description: 'In situations where you can physically menace the target when you Coerce or Demoralize, you gain a +1 circumstance bonus to your Intimidation check and you ignore the penalty for not sharing a language. If your Strength score is 20 or higher and you are a master in Intimidation, this bonus increases to +2.'};
     pdf.skillFeat6 = {name: 'Terrifying Resistance'};
     pdf.skillFeat8 = {name: 'Battle Cry'};
     pdf.skillFeat10 = {name: 'Terrified Retreat'};
@@ -115,19 +115,19 @@ async function init() {
     pdf.skillFeat18 = {name: 'Aerobatics Mastery'};
     pdf.skillFeat20 = {name: 'Additional Lore - Dragon Lore'};
 
-    pdf.generalFeat3 = {name: 'Canny Acumen - Reflex'};
+    pdf.generalFeat3 = {name: 'Canny Acumen - Reflex', description: 'You become an expert in Reflex saves. At 17th level, you become a master instead.'};
     pdf.generalFeat7 = {name: 'Toughness'};
     pdf.generalFeat11 = {name: 'Incredible Initiative'};
     pdf.generalFeat15 = {name: 'Feather Step'};
     pdf.generalFeat19 = {name: 'Incredible Investiture'};
 
     pdf.bonusFeats = [
-        {name: 'Draconic Arrogance'},
-        {name: 'Opportunist'},
+        {name: 'Draconic Arrogance', description: 'Few can sway you from your goals while the fury of combat fills you. While raging, you gain a +2 status bonus to saving throws against emotion effects.'},
+        {name: 'Opportunist', description: 'You gain the Attack of Opportunity reaction.'},
         {name: 'Basic Maneuver'},
         {name: 'Power Attack'},
         {name: 'Furious Focus'},
-        {name: 'Fighter Dedication'},
+        {name: 'Fighter Dedication', description: 'You become trained in simple weapons and martial weapons. You become trained in your choice of Acrobatics or Athletics; if you are already trained in both of these skills, you instead become trained in a skill of your choice. You become trained in fighter class DC.'},
         {name: 'Advanced Maneuver'},
         {name: 'Lunge'},
         {name: 'Knockdown'},
@@ -137,10 +137,10 @@ async function init() {
         {name: 'Combat Reflexes'},
     ];
 
-    pdf.classFeature1_1 = {name: 'Rage'};
-    pdf.classFeature1_2 = {name: 'Instinct - Dragon'};
-    pdf.classFeature3 = {name: 'Deny Advantage'};
-    pdf.classFeature5 = {name: 'Brutality'};
+    pdf.classFeature1_1 = {name: 'Rage', description: 'You gain the Rage action, which lets you fly into a frenzy.'};
+    pdf.classFeature1_2 = {name: 'Instinct - Dragon', description: 'When you use draconic rage, you increase the additional damage from Rage from 4 to 8. If you have greater weapon specialization, instead increase the damage from Rage when using draconic rage from 8 to 16.'};
+    pdf.classFeature3 = {name: 'Deny Advantage', description: 'Your foes struggle to pass your defenses. You aren’t flat-footed to hidden, undetected, or flanking creatures of your level or lower, or creatures of your level or lower using surprise attack. However, they can still help their allies flank.'};
+    pdf.classFeature5 = {name: 'Brutality', description: 'Your fury makes your weapons lethal. Your proficiency ranks for simple weapons, martial weapons, and unarmed attacks increase to expert. While raging, you gain access to the critical specialization effects for melee weapons and unarmed attacks.'};
     pdf.classFeature7 = {name: 'Weapon Specialization'};
     pdf.classFeature9 = {name: 'Lightning Reflexes'};
     pdf.classFeature11 = {name: 'Mighty Rage'};
@@ -148,6 +148,8 @@ async function init() {
     pdf.classFeature15 = {name: 'Greater Weapon Specialization, Indomitable Will'};
     pdf.classFeature17 = {name: 'Heightened Senses, Quick Rage'};
     pdf.classFeature19 = {name: 'Armor Of Fury, Devastator'};
+
+    pdf.appendFeatDetails();
 
     pdf.dataUri().then((data) => {
         object.setAttribute('data', data);
