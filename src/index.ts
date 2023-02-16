@@ -11,6 +11,7 @@ import HitPoints from "./Pf2/HitPoints";
 import Perception from "./Pf2/Perception";
 import Strike from "./Pf2/Strike";
 import WeaponProficiencies from "./Pf2/WeaponProficiencies";
+import sketchUrl from "./Iconic_Amiri.png";
 
 async function init() {
     const object: HTMLObjectElement = <HTMLObjectElement>document.getElementById('pdf');
@@ -137,10 +138,22 @@ async function init() {
         {name: 'Combat Reflexes'},
     ];
 
-    pdf.classFeature1_1 = {name: 'Rage', description: 'You gain the Rage action, which lets you fly into a frenzy.'};
-    pdf.classFeature1_2 = {name: 'Instinct - Dragon', description: 'When you use draconic rage, you increase the additional damage from Rage from 4 to 8. If you have greater weapon specialization, instead increase the damage from Rage when using draconic rage from 8 to 16.'};
-    pdf.classFeature3 = {name: 'Deny Advantage', description: 'Your foes struggle to pass your defenses. You aren’t flat-footed to hidden, undetected, or flanking creatures of your level or lower, or creatures of your level or lower using surprise attack. However, they can still help their allies flank.'};
-    pdf.classFeature5 = {name: 'Brutality', description: 'Your fury makes your weapons lethal. Your proficiency ranks for simple weapons, martial weapons, and unarmed attacks increase to expert. While raging, you gain access to the critical specialization effects for melee weapons and unarmed attacks.'};
+    pdf.classFeature1_1 = {
+        name: 'Rage',
+        description: 'You gain the Rage action, which lets you fly into a frenzy.'
+    };
+    pdf.classFeature1_2 = {
+        name: 'Instinct - Dragon',
+        description: 'When you use draconic rage, you increase the additional damage from Rage from 4 to 8. If you have greater weapon specialization, instead increase the damage from Rage when using draconic rage from 8 to 16.'
+    };
+    pdf.classFeature3 = {
+        name: 'Deny Advantage',
+        description: 'Your foes struggle to pass your defenses. You aren’t flat-footed to hidden, undetected, or flanking creatures of your level or lower, or creatures of your level or lower using surprise attack. However, they can still help their allies flank.'
+    };
+    pdf.classFeature5 = {
+        name: 'Brutality',
+        description: 'Your fury makes your weapons lethal. Your proficiency ranks for simple weapons, martial weapons, and unarmed attacks increase to expert. While raging, you gain access to the critical specialization effects for melee weapons and unarmed attacks.'
+    };
     pdf.classFeature7 = {name: 'Weapon Specialization'};
     pdf.classFeature9 = {name: 'Lightning Reflexes'};
     pdf.classFeature11 = {name: 'Mighty Rage'};
@@ -148,6 +161,30 @@ async function init() {
     pdf.classFeature15 = [{name: 'Greater Weapon Specialization'}, {name: 'Indomitable Will'}];
     pdf.classFeature17 = [{name: 'Heightened Senses'}, {name: 'Quick Rage'}];
     pdf.classFeature19 = [{name: 'Armor Of Fury'}, {name: 'Devastator'}];
+
+    pdf.wornItems = [{
+        name: 'Longbow',
+        bulk: 2
+    }, {name: 'Ouroboros Flail (greater)', bulk: 2}, {
+        name: 'Studded Leather',
+        bulk: 1
+    }];
+    pdf.readiedItems = [{name: 'Skyrider Sword', bulk: 1}];
+    pdf.otherItems = [{
+        name: 'Adamantine',
+        bulk: 1,
+        quantity: 2
+    }, {name: 'Artisan\'s Tools', bulk: 2}, {
+        name: 'Thieve\'s Tools',
+        bulk: 0.1,
+        invested: true
+    }];
+
+    pdf.purse = {copper: 150, gold: 5, platinum: 1}
+
+    pdf.fillBulk();
+
+    await pdf.importCharacterSketchPng(await fetch(sketchUrl).then(res => res.arrayBuffer()));
 
     pdf.appendFeatDetails();
 

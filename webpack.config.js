@@ -11,7 +11,11 @@ module.exports = {
         exclude: /node_modules/,
       },
       {
-        test: /character_sheet.pdf$/,
+        test: /\.pdf$/,
+        type: "asset/resource",
+      },
+      {
+        test: /\.png$/,
         type: "asset/resource",
       },
       {

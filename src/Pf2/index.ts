@@ -1,4 +1,10 @@
-import { PDFDocument, PDFForm, PDFTextField } from 'pdf-lib'
+import {
+    PDFButton,
+    PDFDocument,
+    PDFForm,
+    PDFImage,
+    PDFTextField
+} from 'pdf-lib'
 import PDF from './character_sheet.pdf'
 import Ability from './Ability'
 import Proficiency from './Proficiency'
@@ -15,6 +21,21 @@ import Strike from "./Strike";
 import Feat from "./Feat";
 import FeatRecapPage from "./FeatRecapPage";
 
+interface InventoryItem {
+    name: string;
+    quantity?: number;
+    bulk?: number;
+
+    invested?: boolean;
+}
+
+interface Purse {
+    copper?: number;
+    silver?: number;
+    gold?: number;
+    platinum?: number;
+}
+
 export default class Pf2 {
     pdfDoc: PDFDocument;
     form: PDFForm;
@@ -23,6 +44,11 @@ export default class Pf2 {
     _level: number;
 
     allFeats: Feat[] = [];
+    private characterSketch: PDFImage;
+    private wornItemsBulk: number;
+    private readiedItemsBulk: number;
+    private otherItemsBulk: number;
+    private purseBulk: number;
 
     public set characterName(name: string) {
         this.setTextField('CHARACTER_NAME', name);
@@ -648,9 +674,59 @@ export default class Pf2 {
         this.setTextField(`FEATURE_19`, this.formatList(names));
     }
 
+    public set wornItems(items: InventoryItem[]) {
+        this.wornItemsBulk = Math.floor(items.reduce((sum, item) => {
+            return sum + item.bulk * (item.quantity || 1);
+        }, 0));
+
+        this.setItems(items, 'WORN_ITEMS');
+    }
+
+    public set readiedItems(items: InventoryItem[]) {
+        this.readiedItemsBulk = Math.floor(items.reduce((sum, item) => {
+            return sum + item.bulk * (item.quantity || 1);
+        }, 0));
+
+        this.setItems(items, 'READIED_ITEMS');
+    }
+
+    public set otherItems(items: InventoryItem[]) {
+        this.otherItemsBulk = this.calculateBulk(items);
+
+        this.setItems(items, 'OTHER_ITEMS');
+    }
+
+    public set purse(purse: Purse) {
+        this.purseBulk =
+            ((purse.copper || 0) +
+            (purse.silver || 0) +
+            (purse.gold || 0) +
+            (purse.platinum || 0)) / 1000.0;
+
+        this.setTextField('COPPER', purse.copper || 0);
+        this.setTextField('SILVER', purse.silver || 0);
+        this.setTextField('GOLD', purse.gold || 0);
+        this.setTextField('PLATINUM', purse.platinum || 0);
+    }
+
+    public async importCharacterSketchPng(sketchData: string|ArrayBuffer) {
+        const sketchButton = this.form.getField('CHARACTER_SKETCH');
+        if (sketchButton instanceof PDFButton) {
+            this.characterSketch = await this.pdfDoc.embedPng(sketchData);
+            sketchButton.setImage(this.characterSketch);
+        }
+    }
+
     public appendFeatDetails() {
         const featRecapPage = new FeatRecapPage(this.pdfDoc);
         featRecapPage.addFeats(this.allFeats);
+    }
+
+    public fillBulk() {
+        const bulk = Math.floor(this.wornItemsBulk + this.readiedItemsBulk + this.otherItemsBulk + this.purseBulk);
+        this.setTextField('CURRENT_BULK', bulk);
+        this.setTextField('ENCUMBERED_BULK', this._abilityScores.modifier(Ability.STR) + 5);
+        this.setTextField('MAXIMUM_BULK', this._abilityScores.modifier(Ability.STR) + 10);
     }
 
     public dataUri(): Promise<string> {
@@ -685,7 +761,7 @@ export default class Pf2 {
     }
 
     private setTextField(name: string, value: string|number|null, strict: boolean = false) {
-        if (value === null) {
+        if (value === null || value === undefined) {
             return;
         }
 
@@ -767,5 +843,28 @@ export default class Pf2 {
         this.setCheckBox(`W${idx}_${strike.damageType}`);
         this.setTextField(`W${idx}_OTHER`, this.formatList(strike.otherNotes));
         this.setTextField(`W${idx}_TRAITS`, this.formatList(strike.traits));
+    }
+
+    private setItems(items: InventoryItem[], itemField: string) {
+        const itemLines: string[] = [];
+        const investLines: string[] = [];
+        const bulkLine: string[] = [];
+        items.forEach((item) => {
+            const quantity = item.quantity ? ` (${item.quantity})` : '';
+            itemLines.push(item.name + quantity);
+
+            investLines.push(item.invested ? 'x' : '');
+            bulkLine.push(item.bulk.toString());
+        });
+
+        this.setTextField(`${itemField}_LIST`, itemLines.join('\n'));
+        this.setTextField(`${itemField}_INVEST`, investLines.join('\n'));
+        this.setTextField(`${itemField}_BULK`, bulkLine.join('\n'));
+    }
+
+    private calculateBulk(items: InventoryItem[]) {
+        return items.reduce((sum, item) => {
+            return sum + item.bulk * (item.quantity || 1);
+        }, 0);
     }
 }

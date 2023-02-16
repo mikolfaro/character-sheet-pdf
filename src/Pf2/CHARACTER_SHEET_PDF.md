@@ -254,7 +254,7 @@ Pieces
 - COPPER
 - SILVER
 - GOLD
-- SILVER
+- PLATINUM
 
 # Charcter sketch
 - CHARACTER_SKETCH
