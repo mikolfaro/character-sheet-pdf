@@ -144,10 +144,10 @@ async function init() {
     pdf.classFeature7 = {name: 'Weapon Specialization'};
     pdf.classFeature9 = {name: 'Lightning Reflexes'};
     pdf.classFeature11 = {name: 'Mighty Rage'};
-    pdf.classFeature13 = {name: 'Greater Juggernaut, Medium Armor Expertise, Weapon Fury'};
-    pdf.classFeature15 = {name: 'Greater Weapon Specialization, Indomitable Will'};
-    pdf.classFeature17 = {name: 'Heightened Senses, Quick Rage'};
-    pdf.classFeature19 = {name: 'Armor Of Fury, Devastator'};
+    pdf.classFeature13 = [{name: 'Greater Juggernaut'}, {name: 'Medium Armor Expertise'}, {name: 'Weapon Fury'}];
+    pdf.classFeature15 = [{name: 'Greater Weapon Specialization'}, {name: 'Indomitable Will'}];
+    pdf.classFeature17 = [{name: 'Heightened Senses'}, {name: 'Quick Rage'}];
+    pdf.classFeature19 = [{name: 'Armor Of Fury'}, {name: 'Devastator'}];
 
     pdf.appendFeatDetails();
 

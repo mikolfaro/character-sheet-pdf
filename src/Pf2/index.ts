@@ -13,6 +13,7 @@ import Perception from "./Perception";
 import WeaponProficiencies from "./WeaponProficiencies";
 import Strike from "./Strike";
 import Feat from "./Feat";
+import FeatRecapPage from "./FeatRecapPage";
 
 export default class Pf2 {
     pdfDoc: PDFDocument;
@@ -648,26 +649,8 @@ export default class Pf2 {
     }
 
     public appendFeatDetails() {
-        const {width: width, height: height} = this.pdfDoc.getPage(0).getSize();
-        const featPage = this.pdfDoc.addPage([width, height]);
-        featPage.moveTo(22, 740);
-        featPage.drawText('Feat and feature details', {size: 16});
-
-
-        // this.allFeats
-        //     .sort((a, b) => a.name - b.name)
-
-        featPage.moveTo(22, 720);
-        this.allFeats.forEach((feat, idx) => {
-            featPage.moveDown(12);
-            featPage.drawText(feat.name, {size: 12});
-            if (feat.description) {
-                featPage.moveDown(8);
-                featPage.drawText(feat.description, {size: 8});
-            }
-
-            featPage.moveDown(8);
-        });
+        const featRecapPage = new FeatRecapPage(this.pdfDoc);
+        featRecapPage.addFeats(this.allFeats);
     }
 
     public dataUri(): Promise<string> {
