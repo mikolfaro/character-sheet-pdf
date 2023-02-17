@@ -1,4 +1,4 @@
 export default class Feat {
-    name: string;
-    description?: string;
+  name: string;
+  description?: string;
 }
