@@ -5,9 +5,7 @@
     "module": "ES2020",
     "moduleResolution":"node",
     "esModuleInterop": true,
-    "lib": [
-      "es2020", "dom"
-    ]
+    "lib": ["es2020", "dom"]
   },
   "include": ["src/**/*.ts"],
   "exclude": ["node_modules", "**/*.spec.ts"]
