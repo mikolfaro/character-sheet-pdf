@@ -5,36 +5,23 @@ import {
     PDFImage,
     PDFTextField
 } from 'pdf-lib'
-import PDF from './character_sheet.pdf'
 import Ability from './Ability'
-import Proficiency from './Proficiency'
-import Skill from "./Skill";
-import Lore from "./Lore";
 import AbilityScores from "./AbilityScore";
-import ClassDC from "./ClassDC";
 import ArmorClass from "./ArmorClass";
-import SavingThrow from "./SavingThrows";
-import HitPoints from "./HitPoints";
-import Perception from "./Perception";
-import WeaponProficiencies from "./WeaponProficiencies";
-import Strike from "./Strike";
+import ClassDC from "./ClassDC";
 import Feat from "./Feat";
 import FeatRecapPage from "./FeatRecapPage";
-
-interface InventoryItem {
-    name: string;
-    quantity?: number;
-    bulk?: number;
-
-    invested?: boolean;
-}
-
-interface Purse {
-    copper?: number;
-    silver?: number;
-    gold?: number;
-    platinum?: number;
-}
+import HitPoints from "./HitPoints";
+import InventoryItem from "./InventoryItem";
+import Lore from "./Lore";
+import Perception from "./Perception";
+import Proficiency from './Proficiency'
+import Purse from "./Purse";
+import SavingThrow from "./SavingThrows";
+import Skill from "./Skill";
+import Strike from "./Strike";
+import WeaponProficiencies from "./WeaponProficiencies";
+import PDF from './character_sheet.pdf'
 
 export default class Pf2 {
     pdfDoc: PDFDocument;
