@@ -256,7 +256,7 @@ Pieces
 - GOLD
 - PLATINUM
 
-# Charcter sketch
+# Character sketch
 - CHARACTER_SKETCH
 - ETHNICITY
 - NATIONALITY

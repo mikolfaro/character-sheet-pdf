@@ -26,6 +26,57 @@ import WeaponProficiencies from './WeaponProficiencies';
 
 import PDF from './character_sheet.pdf';
 
+interface SpellAttackDC {
+  key: Ability;
+  attackProficiency?: Proficiency;
+  dcProficiency?: Proficiency;
+}
+
+interface MagicTraditions {
+  prepared?: boolean;
+  spontaneous ?: boolean;
+  arcane?: boolean;
+  occult?: boolean;
+  primal?: boolean;
+  divine?: boolean;
+}
+
+interface SpellSlot {
+  level: number;
+  total: number;
+  remaining: number;
+}
+
+interface SpellSlots {
+  cantripLevel: number;
+  spellSlots?: SpellSlot[];
+}
+
+interface FocusPoints {
+  current: number;
+  maximum: number;
+}
+
+class Spell {
+  readonly name: string;
+  readonly description: string;
+  readonly actions: number;
+  readonly prepared: boolean;
+  readonly material: boolean;
+  readonly somatic: boolean;
+  readonly verbal: boolean;
+
+  constructor(name: string, description: string, actions: number, prepared: boolean = false, material: boolean = false, somatic: boolean = false, verbal: boolean = false) {
+    this.name = name;
+    this.description = description;
+    this.actions = actions;
+    this.prepared = prepared;
+    this.material = material;
+    this.somatic = somatic;
+    this.verbal = verbal;
+  }
+}
+
 export default class Pf2 {
   pdfDoc: PDFDocument;
   form: PDFForm;
@@ -550,6 +601,66 @@ export default class Pf2 {
     });
   }
 
+  set spellAttack(value: SpellAttackDC) {
+    const spellKeyBonus = this._abilityScores.modifier(value.key);
+    const spellAttackProfiencyBonus = value.attackProficiency.bonus(this.level);
+    const spellAttackValue = spellKeyBonus + spellAttackProfiencyBonus;
+    const spellDcProficiencyBonus = value.dcProficiency.bonus(this.level);
+    const spellDcValue = 10 + spellKeyBonus + spellDcProficiencyBonus;
+
+    this.setTextField('SPELL_ATTACK_VALUE', spellAttackValue);
+    this.setTextField('SPELL_ATTACK_KEY_BONUS', this.formatModifier(spellKeyBonus));
+    this.setProficiencyFields('SPELL_ATTACK_PROF', value.attackProficiency);
+
+    this.setTextField('SPELL_DC_VALUE', spellDcValue);
+    this.setTextField('SPELL_DC_KEY_BONUS', this.formatModifier(spellKeyBonus));
+    this.setProficiencyFields('SPELL_DC_PROF', value.dcProficiency);
+  }
+
+  set magicTraditions(value: MagicTraditions) {
+    if (value.prepared) {
+      this.setCheckBox('PREPARED');
+    }
+
+    if (value.spontaneous) {
+      this.setCheckBox('SPONTANEOUS');
+    }
+
+    if (value.arcane) {
+      this.setCheckBox('ARCANE');
+    }
+
+    if (value.occult) {
+      this.setCheckBox('OCCULT');
+    }
+
+    if (value.divine) {
+      this.setCheckBox('DIVINE');
+    }
+
+    if (value.primal) {
+      this.setCheckBox('PRIMAL');
+    }
+  }
+
+  set spellSlots(value: SpellSlots) {
+    this.setTextField('CANTRIP_LEVEL', value.cantripLevel);
+    value.spellSlots.forEach((spellSlot) => {
+      this.fillSpellSlot(spellSlot);
+    });
+  }
+
+  set cantrips(value: Spell[]) {
+    value.slice(0, 7).forEach((cantrip, idx) => {
+      this.fillSpell(cantrip, `CAN${idx + 1}`);
+    });
+  }
+
+  set focusPoints(value: FocusPoints) {
+    this.setTextField('FOCUS_POINTS_CURRENT', value.current);
+    this.setTextField('FOCUS_POINTS_MAXIMUM', value.maximum);
+  }
+
   async importCharacterSketchPng(sketchData: string | ArrayBuffer) {
     const sketchButton = this.form.getField('CHARACTER_SKETCH');
     if (sketchButton instanceof PDFButton) {
@@ -769,6 +880,33 @@ export default class Pf2 {
       this.setCheckBox(`${fieldName}_REACTION`);
     }
   }
+
+  private fillSpellSlot(spellSlot: SpellSlot) {
+    this.setTextField(`SS${spellSlot.level}_MAX`, spellSlot.total);
+    this.setTextField(`SS${spellSlot.level}_REMAINING`, spellSlot.remaining);
+  }
+
+  private fillSpell(spell: Spell, fieldName: string) {
+    this.setTextField(`${fieldName}_NAME`, spell.name);
+    this.setTextField(`${fieldName}_DESCRIPTION`, spell.description);
+    this.setTextField(`${fieldName}_ACTIONS`, spell.actions);
+
+    if (spell.prepared) {
+      this.setCheckBox(`${fieldName}_PREP`);
+    }
+
+    if ( spell.material) {
+      this.setCheckBox(`${fieldName}_M`);
+    }
+
+    if (spell.somatic) {
+      this.setCheckBox(`${fieldName}_S`);
+    }
+
+    if (spell.verbal) {
+      this.setCheckBox(`${fieldName}_V`);
+    }
+  }
 }
 
 export {
@@ -782,6 +920,7 @@ export {
   Proficiency,
   SavingThrow,
   Skill,
+    Spell,
   Strike,
   WeaponProficiencies,
 };

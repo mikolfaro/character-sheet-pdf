@@ -8,13 +8,14 @@ import Pf2, {
   Perception,
   Proficiency,
   SavingThrow,
-  Skill,
+  Skill, Spell,
   Strike,
   WeaponProficiencies,
-} from '../src/Pf2';
+} from '../src/Pf2'
 
 import './style.css';
 import sketchUrl from './Iconic_Amiri.png';
+import goblinUrl from './Goblin02.png';
 
 async function initBarbarbarian() {
   const object = document.getElementById('pdf');
@@ -409,9 +410,7 @@ async function initBarbarbarian() {
 
   pdf.fillBulk();
 
-  await pdf.importCharacterSketchPng(
-    await fetch(sketchUrl).then((res) => res.arrayBuffer()),
-  );
+  await pdf.importCharacterSketchPng(await fetch(sketchUrl).then((res) => res.arrayBuffer()));
 
   pdf.appendFeatDetails();
 
@@ -491,6 +490,7 @@ async function initSorcerer() {
   pdf.ancestryFeat1 = {name: 'Goblin Song', description: ''};
   pdf.classFeature1_1 = {name: 'Bloodline - Draconic', description: 'The blood of dragons flows through your veins. These beasts are both fearsome in combat and skilled at magic.'};
   pdf.classFeature1_2 = {name: 'Spell Repertoire', description: 'You know two 1st-level spells and four cantrips, plus one of each from your bloodline. When you gain a new level of spells, gain your bloodline spell and choose any other spells you gain.'}
+  pdf.skillFeatB = {name: 'Specialty Crafting - Leatherworking', description: ''}
   pdf.skillFeat2 = {name: 'Arcane Sense', description: ''};
   pdf.classFeat2 = {name: 'Familiar', description: 'An animal serves you and assists your spellcasting. You gain a familiar.'};
   pdf.generalFeat3 = {name: 'Improvised Repair'};
@@ -501,6 +501,29 @@ async function initSorcerer() {
   pdf.classFeature5 = {name: 'Magical fortitude', description: 'Magical power has improved your body’s resiliency. Your proficiency rank for Fortitude saves increases to expert.'}
   pdf.classFeat6 = {name: 'Detonating Spell'};
   pdf.skillFeat6 = {name: 'Magical Shorthand'};
+
+  pdf.spellAttack = {attackProficiency: Proficiency.T, dcProficiency: Proficiency.T, key: Ability.CHA};
+  pdf.magicTraditions = {spontaneous: true, arcane: true}
+  pdf.spellSlots = {
+    cantripLevel: 5,
+    spellSlots: [
+      { level: 1, total: 4, remaining: 3 },
+      { level: 2, total: 4, remaining: 2 },
+      { level: 3, total: 4, remaining: 1 },
+    ],
+  };
+
+  pdf.cantrips = [
+    new Spell('Chill Touch', 'Siphoning negative energy into yourself, your hand radiates a pale darkness. Your touch weakens the living and disorients undead, possibly even causing them to flee. The effect depends on whether the target is living or undead.\n •Living Creature The spell deals negative damage equal to 1d4 + 4. The target attempts a basic Fortitude save, but is also enfeebled 1 for 1 round on a critical failure.\n •Undead Creature The target is flat-footed for 1 round on a failed Fortitude save. On a critical failure, the target is also fleeing for 1 round unless it succeeds at a Will save.', 2, false, false, true, true),
+    new Spell('Daze', 'You cloud the target’s mind and daze it with a mental jolt. The jolt deals 4 mental damage; the target must attempt a basic Will save. If the target critically fails the save, it is also stunned 1.', 2, false, false, true, true),
+    new Spell('Gale Blast', 'Wind flows from your outstretched hands and whirls around you in a 5-foot emanation. Each creature in the area takes bludgeoning damage 4, with a Fortitude save.', 2, false, false, true, true),
+    new Spell('Message', 'You mouth words quietly, but instead of coming out of your mouth, they’re transferred directly to the ears of the target. While others can’t hear your words any better than if you normally mouthed them, the target can hear your words as if they were standing next to you. The target can give a brief response as a reaction, or as a free action on their next turn if they wish, but they must be able to see you and be within range to do so. If they respond, their response is delivered directly to your ear, just like the original message.', 1, false, false, false, true),
+    new Spell('Shield', 'You raise a magical shield of force. This counts as using the Raise a Shield action, giving you a +1 circumstance bonus to AC until the start of your next turn, but it doesn’t require a hand to use.\n While the spell is in effect, you can use the Shield Block reaction with your magic shield. The shield has Hardness 5.\n After you use Shield Block, the spell ends and you can’t cast it again for 10 minutes. Unlike a normal Shield Block, you can use the spell’s reaction against the magic missile spell.', 1, false, false, false, true),
+  ]
+
+  pdf.focusPoints = {maximum: 1, current: 1};
+
+  await pdf.importCharacterSketchPng(await fetch(goblinUrl).then((res) => res.arrayBuffer()));
 
   pdf.appendFeatDetails();
 
