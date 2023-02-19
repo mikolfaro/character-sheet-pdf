@@ -699,11 +699,14 @@ export default class Pf2 {
 
   private setStrike(strike: Strike, idx: number) {
     const keyAttackBonus = this._abilityScores.modifier(strike.keyAbility);
-    this.setTextField(`W${idx}_NAME`, strike.weapon);
+    const proficiencyValue = strike.proficiency.bonus(this.level);
+    const attackValue = keyAttackBonus + proficiencyValue + strike.otherBonus;
 
+    this.setTextField(`W${idx}_NAME`, strike.weapon);
+    this.setTextField(`W${idx}_ATTACK`, attackValue);
     this.setTextField(`W${idx}_KEY_BONUS`, keyAttackBonus);
     this.setProficiencyFields(`W${idx}_PROF`, strike.proficiency);
-    this.setTextField(`W${idx}_ITEM_BONUS`, strike.otherBonus);
+    this.setTextField(`W${idx}_ITEM_BONUS`, this.formatModifier(strike.otherBonus));
 
     this.setTextField(`W${idx}_DAMAGE_DICE`, strike.damageDice);
     this.setTextField(`W${idx}_DAMAGE_BONUS`, strike.damageBonus);

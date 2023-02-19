@@ -15,7 +15,6 @@ import Pf2, {
 
 import './style.css';
 import sketchUrl from './Iconic_Amiri.png';
-import ClassDC from '../src/Pf2/ClassDC'
 
 async function initBarbarbarian() {
   const object = document.getElementById('pdf');
@@ -425,8 +424,13 @@ async function initSorcerer() {
   const object = document.getElementById('pdf');
   const pdf = await Pf2.create();
 
-  pdf.playerName = 'Pino';
+  pdf.characterName = 'Pino';
+  pdf.playerName = 'Mikol';
+  pdf.experiencePointsXp = 54;
   pdf.class = 'Sorcerer';
+  pdf.alignement = 'C';
+  pdf.traits = ['Human', 'Humanoid'];
+  pdf.deity = 'Asdrubaldeus';
   pdf.background = 'Artist';
   pdf.size = 'S';
   pdf.level = 6;
@@ -434,7 +438,7 @@ async function initSorcerer() {
   pdf.heroPoints = 2;
 
   pdf.abilityScores = new AbilityScores(10, 18, 14, 14, 12, 18);
-  pdf.classDc = new ClassDC(Ability.CHA, Proficiency.U);
+  pdf.classDc = {keyAbility: Ability.CHA, proficiency: Proficiency.U, otherBonus: null};
   pdf.armorClass = new ArmorClass(null, Proficiency.T, Proficiency.U, Proficiency.U, Proficiency.U, Proficiency.T);
   pdf.fortitude = new SavingThrow(Proficiency.E);
   pdf.reflex = new SavingThrow(Proficiency.T);
@@ -442,6 +446,21 @@ async function initSorcerer() {
   pdf.hitPoints = new HitPoints(58, 45);
   pdf.perception = new Perception(Proficiency.T, null, 'Darkvision');
   pdf.speed = 25;
+
+  pdf.meeleeStrikes = [
+    new Strike(
+      'Dagger of Venom', Ability.DEX, Proficiency.T, '2d4', null, 'P',
+      [], ['Agile', 'Finesse', 'Poison', 'Magical', 'Necromancy', 'Poison', 'Thrown 10ft', 'Versatile S'],
+      null, null, 1,
+    ),
+  ];
+  pdf.rangedStrikes = [
+    new Strike(
+      'Caterwaul Sling', Ability.DEX, Proficiency.T, '2D6', null, 'B',
+          ['Range 50ft', 'Reload 1'], ['Evocation', 'Magical'],
+      null, null, 1,
+      ),
+  ];
 
   pdf.weaponProficiencies = new WeaponProficiencies(Proficiency.T, Proficiency.U, new Map([
     ["Unarmored", Proficiency.T],
@@ -468,10 +487,43 @@ async function initSorcerer() {
 
   pdf.languages = ["Common", "Dwarven", "Goblin", "Orchish"]
 
+  pdf.heritageFeat1 = {name: 'Unbreakable Goblin', description: 'You’re able to bounce back from injuries easily due to an exceptionally thick skull, cartilaginous bones, or some other mixed blessing. You gain 10 Hit Points from your ancestry instead of 6. When you fall, reduce the falling damage you take as though you had fallen half the distance.'}
+  pdf.ancestryFeat1 = {name: 'Goblin Song', description: ''};
+  pdf.classFeature1_1 = {name: 'Bloodline - Draconic', description: 'The blood of dragons flows through your veins. These beasts are both fearsome in combat and skilled at magic.'};
+  pdf.classFeature1_2 = {name: 'Spell Repertoire', description: 'You know two 1st-level spells and four cantrips, plus one of each from your bloodline. When you gain a new level of spells, gain your bloodline spell and choose any other spells you gain.'}
+  pdf.skillFeat2 = {name: 'Arcane Sense', description: ''};
+  pdf.classFeat2 = {name: 'Familiar', description: 'An animal serves you and assists your spellcasting. You gain a familiar.'};
+  pdf.generalFeat3 = {name: 'Improvised Repair'};
+  pdf.classFeature3 = {name: 'Signature spell'};
+  pdf.skillFeat4 = {name: 'Intimidating Glare'};
+  pdf.classFeat4 = {name: 'Split Shot'};
+  pdf.ancestryFeat5 = {name: 'Junk Tinker', description: 'You can make useful tools out of even twisted or rusted scraps. When using the Crafting skill to Craft, you can make level 0 items, including weapons but not armor, out of junk. This reduces the Price to one-quarter the usual amount but always results in a shoddy item. Shoddy items normally give a penalty, but you don’t take this penalty when using shoddy items you made. You can also incorporate junk to save money while you Craft any item. This grants you a discount on the item as if you had spent 1 additional day working to reduce the cost, but the item is obviously made of junk. At the GM’s discretion, this might affect the item’s resale value depending on the buyer’s tastes.'};
+  pdf.classFeature5 = {name: 'Magical fortitude', description: 'Magical power has improved your body’s resiliency. Your proficiency rank for Fortitude saves increases to expert.'}
+  pdf.classFeat6 = {name: 'Detonating Spell'};
+  pdf.skillFeat6 = {name: 'Magical Shorthand'};
+
+  pdf.appendFeatDetails();
+
   pdf.dataUri().then((data) => {
     object.setAttribute('data', data);
   });
 }
 
-// initBarbarbarian();
 initSorcerer();
+// initBarbarbarian();
+
+document
+  .getElementById('sorcerer')
+  .addEventListener('click', (e) => {
+    e.preventDefault();
+
+    initSorcerer();
+  });
+
+document
+  .getElementById('barbarian')
+  .addEventListener('click', (e) => {
+    e.preventDefault();
+
+    initBarbarbarian();
+  });
