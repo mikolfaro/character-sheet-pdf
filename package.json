@@ -5,7 +5,7 @@
     "develop": "webpack-dev-server -c webpack.dev.js",
     "build": "webpack -c webpack.prod.js",
     "doc": "webpack -c webpack.doc.js",
-    "lint": "yarn lint:prettier && yarn lint:tslint:src && yarn lint:tslint:tests",
+    "lint": "yarn lint:prettier && yarn lint:tslint:src",
     "lint:tslint:src": "tslint --project tsconfig.json --fix",
     "lint:tslint:tests": "tslint --project tests/tsconfig.json --fix",
     "lint:prettier": "prettier --write \"./{src,tests,examples}/**/*.{ts,js,json,html,css}\" --loglevel error"

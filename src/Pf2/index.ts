@@ -8,6 +8,7 @@ import {
 
 import Ability from './Ability';
 import AbilityScores from './AbilityScore';
+import Action from './Action';
 import ArmorClass from './ArmorClass';
 import ClassDC from './ClassDC';
 import Feat from './Feat';
@@ -38,6 +39,8 @@ export default class Pf2 {
   private readiedItemsBulk: number;
   private otherItemsBulk: number;
   private purseBulk: number;
+  private freeActionsAndReactions: Action[];
+  private actionsAndActivities: Action[];
 
   set characterName(name: string) {
     this.setTextField('CHARACTER_NAME', name);
@@ -65,13 +68,9 @@ export default class Pf2 {
 
   set abilityScores(scores: AbilityScores) {
     this._abilityScores = scores;
-
-    for (const [name, value] of Object.entries(scores)) {
-      this.setTextField(`${name.toUpperCase()}_SCORE`, value);
-      this.setModField(
-        `${name.toUpperCase()}_MOD`,
-        scores.modifier(name as Ability),
-      );
+    for (const [ability, value] of this._abilityScores.entries()) {
+      this.setTextField(`${ability}_SCORE`, value);
+      this.setModField(`${ability}_MOD`, scores.modifier(ability));
     }
   }
 
@@ -107,7 +106,7 @@ export default class Pf2 {
 
   set classDc(value: ClassDC) {
     const modBonus = this._abilityScores.modifier(value.keyAbility);
-    const profBonus = Proficiency.bonus(value.proficiency, this.level);
+    const profBonus = value.proficiency.bonus(this.level);
     const dcValue = 10 + modBonus + profBonus + value.otherBonus;
 
     this.setTextField('DC_VALUE', dcValue);
@@ -118,7 +117,7 @@ export default class Pf2 {
 
   set armorClass(value: ArmorClass) {
     const modBonus = this._abilityScores.modifier(Ability.DEX);
-    const profBonus = Proficiency.bonus(value.current, this.level);
+    const profBonus = value.current.bonus(this.level);
     const armorClassValue =
       10 + Math.min(modBonus, value.cap) + profBonus + value.otherBonus;
 
@@ -158,7 +157,7 @@ export default class Pf2 {
 
   set perception(value: Perception) {
     const modBonus = this._abilityScores.modifier(Ability.WIS);
-    const profBonus = Proficiency.bonus(value.proficiency, this.level);
+    const profBonus = value.proficiency.bonus(this.level);
     const perceptionValue = modBonus + profBonus + value.otherBonus;
 
     this.setTextField('PERCEPTION_VALUE', perceptionValue);
@@ -366,7 +365,6 @@ export default class Pf2 {
 
   set skillFeat18(value: Feat[] | Feat) {
     this.setFeatFields(value, `SF_18`);
-
   }
 
   set skillFeat20(value: Feat[] | Feat) {
@@ -531,6 +529,27 @@ export default class Pf2 {
     this.setTextField('PLATINUM', purse.platinum || 0);
   }
 
+  set actions(actions: Action[]) {
+    this.freeActionsAndReactions = [];
+    this.actionsAndActivities = [];
+
+    actions.forEach((action) => {
+      if (action.freeAction || action.reaction) {
+        this.freeActionsAndReactions.push(action);
+      } else {
+        this.actionsAndActivities.push(action);
+      }
+    });
+
+    this.actionsAndActivities.slice(0, 6).forEach((action, idx) => {
+      this.fillAction(action, `AA${idx + 1}`);
+    });
+
+    this.freeActionsAndReactions.slice(0, 6).forEach((action, idx) => {
+      this.fillAction(action, `FA${idx + 1}`);
+    });
+  }
+
   async importCharacterSketchPng(sketchData: string | ArrayBuffer) {
     const sketchButton = this.form.getField('CHARACTER_SKETCH');
     if (sketchButton instanceof PDFButton) {
@@ -626,7 +645,7 @@ export default class Pf2 {
       return;
     }
 
-    const profBonus = Proficiency.bonus(value, this.level);
+    const profBonus = value.bonus(this.level);
     this.setTextField(
       `${proficiencyName}_BONUS`,
       this.formatModifier(profBonus),
@@ -652,7 +671,7 @@ export default class Pf2 {
     fieldName: string,
   ) {
     const modBonus = this._abilityScores.modifier(keyAbility);
-    const profBonus = Proficiency.bonus(value.proficiency, this.level);
+    const profBonus = value.proficiency.bonus(this.level);
     const saveValue = modBonus + profBonus + value.otherBonus;
 
     this.setTextField(`${fieldName}_VALUE`, saveValue);
@@ -665,7 +684,7 @@ export default class Pf2 {
 
   private setSkill(value: Skill, keyAbility: Ability, skillName: string) {
     const modBonus = this._abilityScores.modifier(keyAbility);
-    const profBonus = Proficiency.bonus(value.proficiency, this.level);
+    const profBonus = value.proficiency.bonus(this.level);
     const skillValue =
       modBonus + profBonus + value.otherBonus - value.armorMalus;
 
@@ -724,11 +743,35 @@ export default class Pf2 {
     const names = values.map((aValue) => aValue.name).sort();
     this.setTextField(fieldName, this.formatList(names));
   }
+
+  private fillAction(action: Action, fieldName: string) {
+    this.setTextField(`${fieldName}_NAME`, action.name);
+    if (action.actions) {
+      this.setTextField(`${fieldName}_ACTIONS`, action.actions.toString());
+    }
+
+    if (action.traits) {
+      this.setTextField(`${fieldName}_TRAITS`, this.formatList(action.traits));
+    }
+
+    this.setTextField(`${fieldName}_PAGE`, action.page);
+    this.setTextField(`${fieldName}_DESCRIPTION`, action.description);
+    this.setTextField(`${fieldName}_TRIGGER`, action.trigger);
+
+    if (action.freeAction) {
+      this.setCheckBox(`${fieldName}_FREEACTION`);
+    }
+
+    if (action.reaction) {
+      this.setCheckBox(`${fieldName}_REACTION`);
+    }
+  }
 }
 
 export {
   Ability,
   AbilityScores,
+  Action,
   ArmorClass,
   HitPoints,
   Lore,
