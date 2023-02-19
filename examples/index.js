@@ -15,8 +15,9 @@ import Pf2, {
 
 import './style.css';
 import sketchUrl from './Iconic_Amiri.png';
+import ClassDC from '../src/Pf2/ClassDC'
 
-async function init() {
+async function initBarbarbarian() {
   const object = document.getElementById('pdf');
   const pdf = await Pf2.create();
 
@@ -420,4 +421,57 @@ async function init() {
   });
 }
 
-init();
+async function initSorcerer() {
+  const object = document.getElementById('pdf');
+  const pdf = await Pf2.create();
+
+  pdf.playerName = 'Pino';
+  pdf.class = 'Sorcerer';
+  pdf.background = 'Artist';
+  pdf.size = 'S';
+  pdf.level = 6;
+  pdf.ancestryAndHeritage = 'Unbreakable Goblin';
+  pdf.heroPoints = 2;
+
+  pdf.abilityScores = new AbilityScores(10, 18, 14, 14, 12, 18);
+  pdf.classDc = new ClassDC(Ability.CHA, Proficiency.U);
+  pdf.armorClass = new ArmorClass(null, Proficiency.T, Proficiency.U, Proficiency.U, Proficiency.U, Proficiency.T);
+  pdf.fortitude = new SavingThrow(Proficiency.E);
+  pdf.reflex = new SavingThrow(Proficiency.T);
+  pdf.will = new SavingThrow(Proficiency.E);
+  pdf.hitPoints = new HitPoints(58, 45);
+  pdf.perception = new Perception(Proficiency.T, null, 'Darkvision');
+  pdf.speed = 25;
+
+  pdf.weaponProficiencies = new WeaponProficiencies(Proficiency.T, Proficiency.U, new Map([
+    ["Unarmored", Proficiency.T],
+  ]));
+
+  pdf.acrobatics = new Skill();
+  pdf.arcana = new Skill(Proficiency.E);
+  pdf.athletics = new Skill();
+  pdf.crafting = new Skill(Proficiency.E);
+  pdf.deception = new Skill();
+  pdf.diplomacy = new Skill();
+  pdf.intimidation = new Skill(Proficiency.T);
+  pdf.lore1 = new Lore('Art', Proficiency.T);
+  pdf.medicine = new Skill();
+  pdf.nature = new Skill();
+  pdf.occultism = new Skill(Proficiency.T);
+  pdf.performance = new Skill();
+  pdf.reflex = new Skill();
+  pdf.religion = new Skill();
+  pdf.society = new Skill(Proficiency.T);
+  pdf.stealth = new Skill(Proficiency.T);
+  pdf.survival = new Skill();
+  pdf.thievery = new Skill(Proficiency.T);
+
+  pdf.languages = ["Common", "Dwarven", "Goblin", "Orchish"]
+
+  pdf.dataUri().then((data) => {
+    object.setAttribute('data', data);
+  });
+}
+
+// initBarbarbarian();
+initSorcerer();

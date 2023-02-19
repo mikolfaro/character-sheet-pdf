@@ -118,8 +118,8 @@ export default class Pf2 {
   set armorClass(value: ArmorClass) {
     const modBonus = this._abilityScores.modifier(Ability.DEX);
     const profBonus = value.current.bonus(this.level);
-    const armorClassValue =
-      10 + Math.min(modBonus, value.cap) + profBonus + value.otherBonus;
+    const dexBonus = value.cap ? Math.min(modBonus, value.cap) : modBonus;
+    const armorClassValue = 10 + dexBonus + profBonus + value.otherBonus;
 
     this.setTextField('AC_VALUE', armorClassValue);
     this.setTextField('AC_CAP', this.formatModifier(value.cap));
