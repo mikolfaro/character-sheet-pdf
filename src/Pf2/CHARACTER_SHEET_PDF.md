@@ -280,7 +280,6 @@ Pieces
 - ORGANIZATIONS
 
 # Actions and activities
-
 Actions and activities fields always start with AAi_, where i is a number from 1 to 6.
 - AAi_NAME, name of action/activity number i
 - AAi_ACTIONS
