@@ -6,9 +6,9 @@ import Pf2, {
   HitPoints,
   Lore,
   Perception,
-  Proficiency,
+  Proficiency, SaveType,
   SavingThrow,
-  Skill, Spell,
+  Skill, Spell, SpellComponents,
   Strike,
   WeaponProficiencies,
 } from '../src/Pf2'
@@ -505,7 +505,7 @@ async function initSorcerer() {
   pdf.spellAttack = {attackProficiency: Proficiency.T, dcProficiency: Proficiency.T, key: Ability.CHA};
   pdf.magicTraditions = {spontaneous: true, arcane: true}
   pdf.spellSlots = {
-    cantripLevel: 5,
+    cantripLevel: 3,
     spellSlots: [
       { level: 1, total: 4, remaining: 3 },
       { level: 2, total: 4, remaining: 2 },
@@ -514,14 +514,37 @@ async function initSorcerer() {
   };
 
   pdf.cantrips = [
-    new Spell('Chill Touch', 'Siphoning negative energy into yourself, your hand radiates a pale darkness. Your touch weakens the living and disorients undead, possibly even causing them to flee. The effect depends on whether the target is living or undead.\n •Living Creature The spell deals negative damage equal to 1d4 + 4. The target attempts a basic Fortitude save, but is also enfeebled 1 for 1 round on a critical failure.\n •Undead Creature The target is flat-footed for 1 round on a failed Fortitude save. On a critical failure, the target is also fleeing for 1 round unless it succeeds at a Will save.', 2, false, false, true, true),
-    new Spell('Daze', 'You cloud the target’s mind and daze it with a mental jolt. The jolt deals 4 mental damage; the target must attempt a basic Will save. If the target critically fails the save, it is also stunned 1.', 2, false, false, true, true),
-    new Spell('Gale Blast', 'Wind flows from your outstretched hands and whirls around you in a 5-foot emanation. Each creature in the area takes bludgeoning damage 4, with a Fortitude save.', 2, false, false, true, true),
-    new Spell('Message', 'You mouth words quietly, but instead of coming out of your mouth, they’re transferred directly to the ears of the target. While others can’t hear your words any better than if you normally mouthed them, the target can hear your words as if they were standing next to you. The target can give a brief response as a reaction, or as a free action on their next turn if they wish, but they must be able to see you and be within range to do so. If they respond, their response is delivered directly to your ear, just like the original message.', 1, false, false, false, true),
-    new Spell('Shield', 'You raise a magical shield of force. This counts as using the Raise a Shield action, giving you a +1 circumstance bonus to AC until the start of your next turn, but it doesn’t require a hand to use.\n While the spell is in effect, you can use the Shield Block reaction with your magic shield. The shield has Hardness 5.\n After you use Shield Block, the spell ends and you can’t cast it again for 10 minutes. Unlike a normal Shield Block, you can use the spell’s reaction against the magic missile spell.', 1, false, false, false, true),
+    new Spell('Chill Touch', 'Siphoning negative energy into yourself, your hand radiates a pale darkness. Your touch weakens the living and disorients undead, possibly even causing them to flee. The effect depends on whether the target is living or undead.\n •Living Creature The spell deals negative damage equal to 1d4 + 4. The target attempts a basic Fortitude save, but is also enfeebled 1 for 1 round on a critical failure.\n •Undead Creature The target is flat-footed for 1 round on a failed Fortitude save. On a critical failure, the target is also fleeing for 1 round unless it succeeds at a Will save.',
+      ['Cantrip', 'Necromancy', 'Negative'], { actions: 2, components: [SpellComponents.Somatic, SpellComponents.Verbal]}, false, {save: SaveType.Fortitude, range: 'touch', targets: '1 living or undead creature'}
+    ),
+    new Spell('Daze', 'You cloud the target’s mind and daze it with a mental jolt. The jolt deals 4 mental damage; the target must attempt a basic Will save. If the target critically fails the save, it is also stunned 1.',
+      ['Cantrip', 'Enchantment', 'Mental', 'Nonlethar'],
+      { actions: 2, components: [SpellComponents.Verbal] }, false, { save: SaveType.Will, range: '60ft', targets: '1 creature'}
+    ),
+    new Spell('Gale Blast', 'Wind flows from your outstretched hands and whirls around you in a 5-foot emanation. Each creature in the area takes bludgeoning damage 4, with a Fortitude save.',
+      ['Air', 'Cantrip', 'Evocation'], { actions: 2, components: [SpellComponents.Verbal, SpellComponents.Somatic]}, false, { save: SaveType.Fortitude}
+    ),
+    new Spell('Message', 'You mouth words quietly, but instead of coming out of your mouth, they’re transferred directly to the ears of the target. While others can’t hear your words any better than if you normally mouthed them, the target can hear your words as if they were standing next to you. The target can give a brief response as a reaction, or as a free action on their next turn if they wish, but they must be able to see you and be within range to do so. If they respond, their response is delivered directly to your ear, just like the original message.',
+    ['Auditory', 'Cantrip', 'Illusion', 'Linguistic', 'Mental'], { actions: 1, components: [SpellComponents.Verbal]}, false, { range: '120ft', targets: '1 creature'}
+    ),
+    new Spell('Shield', 'You raise a magical shield of force. This counts as using the Raise a Shield action, giving you a +1 circumstance bonus to AC until the start of your next turn, but it doesn’t require a hand to use.\n While the spell is in effect, you can use the Shield Block reaction with your magic shield. The shield has Hardness 5.\n After you use Shield Block, the spell ends and you can’t cast it again for 10 minutes. Unlike a normal Shield Block, you can use the spell’s reaction against the magic missile spell.',
+      ['Abjuration', 'Cantrip', 'Force'], { actions: 1, components: SpellComponents.Verbal }),
   ]
 
+  pdf.innateSpells = [
+    new Spell('Detect Magic', '', ['Cantrip', 'Detection', 'Divination'],{actions: 2, components: [SpellComponents.Somatic, SpellComponents.Verbal]}, false, {area: '30ft', frequency: 'unlimited'}),
+  ];
+
   pdf.focusPoints = {maximum: 1, current: 1};
+  pdf.focusSpells = [
+    new Spell('Dragon Claws', '', ['Uncommon', 'Morph', 'Transmutation'], {actions: 1, focusPoints: 1, components: [SpellComponents.Verbal]}, false, {duration: '1 minute'}),
+  ];
+
+  pdf.spells = [
+    new Spell('Charm', '', ['Emotion', 'Enchantment', 'Incapacitation', 'Mental'], {actions: 2, components: [SpellComponents.Somatic, SpellComponents.Verbal]}, false, {range: '30ft', targets: '1 creature', save: SaveType.Will, duration: '1 hour'}),
+    new Spell('Goblin Pox', '', ['Disease', 'Necromancy'], {actions: 2, components: [SpellComponents.Somatic, SpellComponents.Verbal]}, false, {range: 'touch', targets: '1 creature', save: SaveType.Fortitude}),
+    new Spell('Blur', '', ['Illusion', 'Visual'], {actions: 2, components: [SpellComponents.Somatic, SpellComponents.Verbal]}, false, {range: 'touch', targets: '1 creature', duration: '1 minute'}),
+  ]
 
   await pdf.importCharacterSketchPng(await fetch(goblinUrl).then((res) => res.arrayBuffer()));
 

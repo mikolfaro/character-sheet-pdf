@@ -57,23 +57,48 @@ interface FocusPoints {
   maximum: number;
 }
 
+enum SaveType {
+  Fortitude = 'Fortitude',
+  Will = 'Will',
+  Reflex = 'Reflex',
+}
+
+enum SpellComponents {
+  Material = 'Material',
+  Verbal = 'Verbal',
+  Somatic = 'Somatic',
+}
+
+interface SpellCost {
+  actions?: number,
+  components?: SpellComponents[],
+  focusPoints?: number
+}
+
+interface SpellRestrictions {
+  save?: SaveType,
+  range?: string,
+  area?: string,
+  targets?: string,
+  frequency?: string
+  duration?: string,
+}
+
 class Spell {
   readonly name: string;
   readonly description: string;
-  readonly actions: number;
+  readonly traits: string[]
   readonly prepared: boolean;
-  readonly material: boolean;
-  readonly somatic: boolean;
-  readonly verbal: boolean;
+  readonly spellCost: SpellCost;
+  readonly restrictions: SpellRestrictions;
 
-  constructor(name: string, description: string, actions: number, prepared: boolean = false, material: boolean = false, somatic: boolean = false, verbal: boolean = false) {
+  constructor(name: string, description: string = null, traits: string[] = [], spellCost: SpellCost = null, prepared: boolean = false, restrictions: SpellRestrictions = null) {
     this.name = name;
     this.description = description;
-    this.actions = actions;
+    this.traits = traits;
+    this.spellCost = spellCost;
     this.prepared = prepared;
-    this.material = material;
-    this.somatic = somatic;
-    this.verbal = verbal;
+    this.restrictions = restrictions;
   }
 }
 
@@ -656,9 +681,27 @@ export default class Pf2 {
     });
   }
 
+  set innateSpells(value: Spell[]) {
+    value.slice(0, 2).forEach((spell, idx) => {
+      this.fillSpell(spell, `INN${idx + 1}`);
+    })
+  }
+
   set focusPoints(value: FocusPoints) {
     this.setTextField('FOCUS_POINTS_CURRENT', value.current);
     this.setTextField('FOCUS_POINTS_MAXIMUM', value.maximum);
+  }
+
+  set focusSpells(value: Spell[]) {
+    value.slice(0, 4).forEach((spell, idx) => {
+      this.fillSpell(spell, `FS${idx + 1}`);
+    })
+  }
+
+  set spells(value: Spell[]) {
+    value.slice(0, 32).forEach((spell, idx) => {
+      this.fillSpell(spell, `SPELL${idx + 1}`);
+    })
   }
 
   async importCharacterSketchPng(sketchData: string | ArrayBuffer) {
@@ -889,21 +932,22 @@ export default class Pf2 {
   private fillSpell(spell: Spell, fieldName: string) {
     this.setTextField(`${fieldName}_NAME`, spell.name);
     this.setTextField(`${fieldName}_DESCRIPTION`, spell.description);
-    this.setTextField(`${fieldName}_ACTIONS`, spell.actions);
+    this.setTextField(`${fieldName}_ACTIONS`, spell.spellCost?.actions);
+    this.setTextField(`${fieldName}_FREQ`, spell.restrictions?.frequency);
 
     if (spell.prepared) {
       this.setCheckBox(`${fieldName}_PREP`);
     }
 
-    if ( spell.material) {
+    if (spell.spellCost?.components?.includes(SpellComponents.Material)) {
       this.setCheckBox(`${fieldName}_M`);
     }
 
-    if (spell.somatic) {
+    if (spell.spellCost?.components?.includes(SpellComponents.Somatic)) {
       this.setCheckBox(`${fieldName}_S`);
     }
 
-    if (spell.verbal) {
+    if (spell.spellCost?.components?.includes(SpellComponents.Verbal)) {
       this.setCheckBox(`${fieldName}_V`);
     }
   }
@@ -919,7 +963,9 @@ export {
   Perception,
   Proficiency,
   SavingThrow,
+    SaveType,
   Skill,
+    SpellComponents,
     Spell,
   Strike,
   WeaponProficiencies,

@@ -344,7 +344,7 @@ Each spell slot level field starts with SSi_, where i is the spell level (from 1
 - INNi_DESCRIPTION
 - INNi_FREQ
 - INNi_M
-- INN2_S
+- INNi_S
 
 # Focus spells
 
