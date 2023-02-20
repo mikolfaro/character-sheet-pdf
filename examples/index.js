@@ -547,11 +547,12 @@ async function initSorcerer() {
   ]
 
   await pdf.importCharacterSketchPng(await fetch(goblinUrl).then((res) => res.arrayBuffer()));
-
   pdf.appendFeatDetails();
 
   pdf.dataUri().then((data) => {
     object.setAttribute('data', data);
+
+    document.getElementById('download').setAttribute('href', data);
   });
 }
 
