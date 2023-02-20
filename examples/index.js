@@ -6,12 +6,15 @@ import Pf2, {
   HitPoints,
   Lore,
   Perception,
-  Proficiency, SaveType,
+  Proficiency,
+  SaveType,
   SavingThrow,
-  Skill, Spell, SpellComponents,
+  Skill,
+  Spell,
+  SpellComponents,
   Strike,
   WeaponProficiencies,
-} from '../src/Pf2'
+} from '../src/Pf2';
 
 import './style.css';
 import sketchUrl from './Iconic_Amiri.png';
@@ -410,7 +413,9 @@ async function initBarbarbarian() {
 
   pdf.fillBulk();
 
-  await pdf.importCharacterSketchPng(await fetch(sketchUrl).then((res) => res.arrayBuffer()));
+  await pdf.importCharacterSketchPng(
+    await fetch(sketchUrl).then((res) => res.arrayBuffer()),
+  );
 
   pdf.appendFeatDetails();
 
@@ -437,8 +442,19 @@ async function initSorcerer() {
   pdf.heroPoints = 2;
 
   pdf.abilityScores = new AbilityScores(10, 18, 14, 14, 12, 18);
-  pdf.classDc = {keyAbility: Ability.CHA, proficiency: Proficiency.U, otherBonus: null};
-  pdf.armorClass = new ArmorClass(null, Proficiency.T, Proficiency.U, Proficiency.U, Proficiency.U, Proficiency.T);
+  pdf.classDc = {
+    keyAbility: Ability.CHA,
+    proficiency: Proficiency.U,
+    otherBonus: null,
+  };
+  pdf.armorClass = new ArmorClass(
+    null,
+    Proficiency.T,
+    Proficiency.U,
+    Proficiency.U,
+    Proficiency.U,
+    Proficiency.T,
+  );
   pdf.fortitude = new SavingThrow(Proficiency.E);
   pdf.reflex = new SavingThrow(Proficiency.T);
   pdf.will = new SavingThrow(Proficiency.E);
@@ -448,22 +464,49 @@ async function initSorcerer() {
 
   pdf.meeleeStrikes = [
     new Strike(
-      'Dagger of Venom', Ability.DEX, Proficiency.T, '2d4', null, 'P',
-      [], ['Agile', 'Finesse', 'Poison', 'Magical', 'Necromancy', 'Poison', 'Thrown 10ft', 'Versatile S'],
-      null, null, 1,
+      'Dagger of Venom',
+      Ability.DEX,
+      Proficiency.T,
+      '2d4',
+      null,
+      'P',
+      [],
+      [
+        'Agile',
+        'Finesse',
+        'Poison',
+        'Magical',
+        'Necromancy',
+        'Poison',
+        'Thrown 10ft',
+        'Versatile S',
+      ],
+      null,
+      null,
+      1,
     ),
   ];
   pdf.rangedStrikes = [
     new Strike(
-      'Caterwaul Sling', Ability.DEX, Proficiency.T, '2D6', null, 'B',
-          ['Range 50ft', 'Reload 1'], ['Evocation', 'Magical'],
-      null, null, 1,
-      ),
+      'Caterwaul Sling',
+      Ability.DEX,
+      Proficiency.T,
+      '2D6',
+      null,
+      'B',
+      ['Range 50ft', 'Reload 1'],
+      ['Evocation', 'Magical'],
+      null,
+      null,
+      1,
+    ),
   ];
 
-  pdf.weaponProficiencies = new WeaponProficiencies(Proficiency.T, Proficiency.U, new Map([
-    ["Unarmored", Proficiency.T],
-  ]));
+  pdf.weaponProficiencies = new WeaponProficiencies(
+    Proficiency.T,
+    Proficiency.U,
+    new Map([['Unarmored', Proficiency.T]]),
+  );
 
   pdf.acrobatics = new Skill();
   pdf.arcana = new Skill(Proficiency.E);
@@ -484,26 +527,57 @@ async function initSorcerer() {
   pdf.survival = new Skill();
   pdf.thievery = new Skill(Proficiency.T);
 
-  pdf.languages = ["Common", "Dwarven", "Goblin", "Orchish"]
+  pdf.languages = ['Common', 'Dwarven', 'Goblin', 'Orchish'];
 
-  pdf.heritageFeat1 = {name: 'Unbreakable Goblin', description: 'You’re able to bounce back from injuries easily due to an exceptionally thick skull, cartilaginous bones, or some other mixed blessing. You gain 10 Hit Points from your ancestry instead of 6. When you fall, reduce the falling damage you take as though you had fallen half the distance.'}
-  pdf.ancestryFeat1 = {name: 'Goblin Song', description: ''};
-  pdf.classFeature1_1 = {name: 'Bloodline - Draconic', description: 'The blood of dragons flows through your veins. These beasts are both fearsome in combat and skilled at magic.'};
-  pdf.classFeature1_2 = {name: 'Spell Repertoire', description: 'You know two 1st-level spells and four cantrips, plus one of each from your bloodline. When you gain a new level of spells, gain your bloodline spell and choose any other spells you gain.'}
-  pdf.skillFeatB = {name: 'Specialty Crafting - Leatherworking', description: ''}
-  pdf.skillFeat2 = {name: 'Arcane Sense', description: ''};
-  pdf.classFeat2 = {name: 'Familiar', description: 'An animal serves you and assists your spellcasting. You gain a familiar.'};
-  pdf.generalFeat3 = {name: 'Improvised Repair'};
-  pdf.classFeature3 = {name: 'Signature spell'};
-  pdf.skillFeat4 = {name: 'Intimidating Glare'};
-  pdf.classFeat4 = {name: 'Split Shot'};
-  pdf.ancestryFeat5 = {name: 'Junk Tinker', description: 'You can make useful tools out of even twisted or rusted scraps. When using the Crafting skill to Craft, you can make level 0 items, including weapons but not armor, out of junk. This reduces the Price to one-quarter the usual amount but always results in a shoddy item. Shoddy items normally give a penalty, but you don’t take this penalty when using shoddy items you made. You can also incorporate junk to save money while you Craft any item. This grants you a discount on the item as if you had spent 1 additional day working to reduce the cost, but the item is obviously made of junk. At the GM’s discretion, this might affect the item’s resale value depending on the buyer’s tastes.'};
-  pdf.classFeature5 = {name: 'Magical fortitude', description: 'Magical power has improved your body’s resiliency. Your proficiency rank for Fortitude saves increases to expert.'}
-  pdf.classFeat6 = {name: 'Detonating Spell'};
-  pdf.skillFeat6 = {name: 'Magical Shorthand'};
+  pdf.heritageFeat1 = {
+    name: 'Unbreakable Goblin',
+    description:
+      'You’re able to bounce back from injuries easily due to an exceptionally thick skull, cartilaginous bones, or some other mixed blessing. You gain 10 Hit Points from your ancestry instead of 6. When you fall, reduce the falling damage you take as though you had fallen half the distance.',
+  };
+  pdf.ancestryFeat1 = { name: 'Goblin Song', description: '' };
+  pdf.classFeature1_1 = {
+    name: 'Bloodline - Draconic',
+    description:
+      'The blood of dragons flows through your veins. These beasts are both fearsome in combat and skilled at magic.',
+  };
+  pdf.classFeature1_2 = {
+    name: 'Spell Repertoire',
+    description:
+      'You know two 1st-level spells and four cantrips, plus one of each from your bloodline. When you gain a new level of spells, gain your bloodline spell and choose any other spells you gain.',
+  };
+  pdf.skillFeatB = {
+    name: 'Specialty Crafting - Leatherworking',
+    description: '',
+  };
+  pdf.skillFeat2 = { name: 'Arcane Sense', description: '' };
+  pdf.classFeat2 = {
+    name: 'Familiar',
+    description:
+      'An animal serves you and assists your spellcasting. You gain a familiar.',
+  };
+  pdf.generalFeat3 = { name: 'Improvised Repair' };
+  pdf.classFeature3 = { name: 'Signature spell' };
+  pdf.skillFeat4 = { name: 'Intimidating Glare' };
+  pdf.classFeat4 = { name: 'Split Shot' };
+  pdf.ancestryFeat5 = {
+    name: 'Junk Tinker',
+    description:
+      'You can make useful tools out of even twisted or rusted scraps. When using the Crafting skill to Craft, you can make level 0 items, including weapons but not armor, out of junk. This reduces the Price to one-quarter the usual amount but always results in a shoddy item. Shoddy items normally give a penalty, but you don’t take this penalty when using shoddy items you made. You can also incorporate junk to save money while you Craft any item. This grants you a discount on the item as if you had spent 1 additional day working to reduce the cost, but the item is obviously made of junk. At the GM’s discretion, this might affect the item’s resale value depending on the buyer’s tastes.',
+  };
+  pdf.classFeature5 = {
+    name: 'Magical fortitude',
+    description:
+      'Magical power has improved your body’s resiliency. Your proficiency rank for Fortitude saves increases to expert.',
+  };
+  pdf.classFeat6 = { name: 'Detonating Spell' };
+  pdf.skillFeat6 = { name: 'Magical Shorthand' };
 
-  pdf.spellAttack = {attackProficiency: Proficiency.T, dcProficiency: Proficiency.T, key: Ability.CHA};
-  pdf.magicTraditions = {spontaneous: true, arcane: true}
+  pdf.spellAttack = {
+    attackProficiency: Proficiency.T,
+    dcProficiency: Proficiency.T,
+    key: Ability.CHA,
+  };
+  pdf.magicTraditions = { spontaneous: true, arcane: true };
   pdf.spellSlots = {
     cantripLevel: 3,
     spellSlots: [
@@ -514,39 +588,126 @@ async function initSorcerer() {
   };
 
   pdf.cantrips = [
-    new Spell('Chill Touch', 'Siphoning negative energy into yourself, your hand radiates a pale darkness. Your touch weakens the living and disorients undead, possibly even causing them to flee. The effect depends on whether the target is living or undead.\n •Living Creature The spell deals negative damage equal to 1d4 + 4. The target attempts a basic Fortitude save, but is also enfeebled 1 for 1 round on a critical failure.\n •Undead Creature The target is flat-footed for 1 round on a failed Fortitude save. On a critical failure, the target is also fleeing for 1 round unless it succeeds at a Will save.',
-      ['Cantrip', 'Necromancy', 'Negative'], { actions: 2, components: [SpellComponents.Somatic, SpellComponents.Verbal]}, false, {save: SaveType.Fortitude, range: 'touch', targets: '1 living or undead creature'}
+    new Spell(
+      'Chill Touch',
+      'Siphoning negative energy into yourself, your hand radiates a pale darkness. Your touch weakens the living and disorients undead, possibly even causing them to flee. The effect depends on whether the target is living or undead.\n •Living Creature The spell deals negative damage equal to 1d4 + 4. The target attempts a basic Fortitude save, but is also enfeebled 1 for 1 round on a critical failure.\n •Undead Creature The target is flat-footed for 1 round on a failed Fortitude save. On a critical failure, the target is also fleeing for 1 round unless it succeeds at a Will save.',
+      ['Cantrip', 'Necromancy', 'Negative'],
+      {
+        actions: 2,
+        components: [SpellComponents.Somatic, SpellComponents.Verbal],
+      },
+      false,
+      {
+        save: SaveType.Fortitude,
+        range: 'touch',
+        targets: '1 living or undead creature',
+      },
     ),
-    new Spell('Daze', 'You cloud the target’s mind and daze it with a mental jolt. The jolt deals 4 mental damage; the target must attempt a basic Will save. If the target critically fails the save, it is also stunned 1.',
+    new Spell(
+      'Daze',
+      'You cloud the target’s mind and daze it with a mental jolt. The jolt deals 4 mental damage; the target must attempt a basic Will save. If the target critically fails the save, it is also stunned 1.',
       ['Cantrip', 'Enchantment', 'Mental', 'Nonlethar'],
-      { actions: 2, components: [SpellComponents.Verbal] }, false, { save: SaveType.Will, range: '60ft', targets: '1 creature'}
+      { actions: 2, components: [SpellComponents.Verbal] },
+      false,
+      { save: SaveType.Will, range: '60ft', targets: '1 creature' },
     ),
-    new Spell('Gale Blast', 'Wind flows from your outstretched hands and whirls around you in a 5-foot emanation. Each creature in the area takes bludgeoning damage 4, with a Fortitude save.',
-      ['Air', 'Cantrip', 'Evocation'], { actions: 2, components: [SpellComponents.Verbal, SpellComponents.Somatic]}, false, { save: SaveType.Fortitude}
+    new Spell(
+      'Gale Blast',
+      'Wind flows from your outstretched hands and whirls around you in a 5-foot emanation. Each creature in the area takes bludgeoning damage 4, with a Fortitude save.',
+      ['Air', 'Cantrip', 'Evocation'],
+      {
+        actions: 2,
+        components: [SpellComponents.Verbal, SpellComponents.Somatic],
+      },
+      false,
+      { save: SaveType.Fortitude },
     ),
-    new Spell('Message', 'You mouth words quietly, but instead of coming out of your mouth, they’re transferred directly to the ears of the target. While others can’t hear your words any better than if you normally mouthed them, the target can hear your words as if they were standing next to you. The target can give a brief response as a reaction, or as a free action on their next turn if they wish, but they must be able to see you and be within range to do so. If they respond, their response is delivered directly to your ear, just like the original message.',
-    ['Auditory', 'Cantrip', 'Illusion', 'Linguistic', 'Mental'], { actions: 1, components: [SpellComponents.Verbal]}, false, { range: '120ft', targets: '1 creature'}
+    new Spell(
+      'Message',
+      'You mouth words quietly, but instead of coming out of your mouth, they’re transferred directly to the ears of the target. While others can’t hear your words any better than if you normally mouthed them, the target can hear your words as if they were standing next to you. The target can give a brief response as a reaction, or as a free action on their next turn if they wish, but they must be able to see you and be within range to do so. If they respond, their response is delivered directly to your ear, just like the original message.',
+      ['Auditory', 'Cantrip', 'Illusion', 'Linguistic', 'Mental'],
+      { actions: 1, components: [SpellComponents.Verbal] },
+      false,
+      { range: '120ft', targets: '1 creature' },
     ),
-    new Spell('Shield', 'You raise a magical shield of force. This counts as using the Raise a Shield action, giving you a +1 circumstance bonus to AC until the start of your next turn, but it doesn’t require a hand to use.\n While the spell is in effect, you can use the Shield Block reaction with your magic shield. The shield has Hardness 5.\n After you use Shield Block, the spell ends and you can’t cast it again for 10 minutes. Unlike a normal Shield Block, you can use the spell’s reaction against the magic missile spell.',
-      ['Abjuration', 'Cantrip', 'Force'], { actions: 1, components: SpellComponents.Verbal }),
-  ]
-
-  pdf.innateSpells = [
-    new Spell('Detect Magic', '', ['Cantrip', 'Detection', 'Divination'],{actions: 2, components: [SpellComponents.Somatic, SpellComponents.Verbal]}, false, {area: '30ft', frequency: 'unlimited'}),
+    new Spell(
+      'Shield',
+      'You raise a magical shield of force. This counts as using the Raise a Shield action, giving you a +1 circumstance bonus to AC until the start of your next turn, but it doesn’t require a hand to use.\n While the spell is in effect, you can use the Shield Block reaction with your magic shield. The shield has Hardness 5.\n After you use Shield Block, the spell ends and you can’t cast it again for 10 minutes. Unlike a normal Shield Block, you can use the spell’s reaction against the magic missile spell.',
+      ['Abjuration', 'Cantrip', 'Force'],
+      { actions: 1, components: SpellComponents.Verbal },
+    ),
   ];
 
-  pdf.focusPoints = {maximum: 1, current: 1};
+  pdf.innateSpells = [
+    new Spell(
+      'Detect Magic',
+      '',
+      ['Cantrip', 'Detection', 'Divination'],
+      {
+        actions: 2,
+        components: [SpellComponents.Somatic, SpellComponents.Verbal],
+      },
+      false,
+      { area: '30ft', frequency: 'unlimited' },
+    ),
+  ];
+
+  pdf.focusPoints = { maximum: 1, current: 1 };
   pdf.focusSpells = [
-    new Spell('Dragon Claws', '', ['Uncommon', 'Morph', 'Transmutation'], {actions: 1, focusPoints: 1, components: [SpellComponents.Verbal]}, false, {duration: '1 minute'}),
+    new Spell(
+      'Dragon Claws',
+      '',
+      ['Uncommon', 'Morph', 'Transmutation'],
+      { actions: 1, focusPoints: 1, components: [SpellComponents.Verbal] },
+      false,
+      { duration: '1 minute' },
+    ),
   ];
 
   pdf.spells = [
-    new Spell('Charm', '', ['Emotion', 'Enchantment', 'Incapacitation', 'Mental'], {actions: 2, components: [SpellComponents.Somatic, SpellComponents.Verbal]}, false, {range: '30ft', targets: '1 creature', save: SaveType.Will, duration: '1 hour'}),
-    new Spell('Goblin Pox', '', ['Disease', 'Necromancy'], {actions: 2, components: [SpellComponents.Somatic, SpellComponents.Verbal]}, false, {range: 'touch', targets: '1 creature', save: SaveType.Fortitude}),
-    new Spell('Blur', '', ['Illusion', 'Visual'], {actions: 2, components: [SpellComponents.Somatic, SpellComponents.Verbal]}, false, {range: 'touch', targets: '1 creature', duration: '1 minute'}),
-  ]
+    new Spell(
+      'Charm',
+      '',
+      ['Emotion', 'Enchantment', 'Incapacitation', 'Mental'],
+      {
+        actions: 2,
+        components: [SpellComponents.Somatic, SpellComponents.Verbal],
+      },
+      false,
+      {
+        range: '30ft',
+        targets: '1 creature',
+        save: SaveType.Will,
+        duration: '1 hour',
+      },
+    ),
+    new Spell(
+      'Goblin Pox',
+      '',
+      ['Disease', 'Necromancy'],
+      {
+        actions: 2,
+        components: [SpellComponents.Somatic, SpellComponents.Verbal],
+      },
+      false,
+      { range: 'touch', targets: '1 creature', save: SaveType.Fortitude },
+    ),
+    new Spell(
+      'Blur',
+      '',
+      ['Illusion', 'Visual'],
+      {
+        actions: 2,
+        components: [SpellComponents.Somatic, SpellComponents.Verbal],
+      },
+      false,
+      { range: 'touch', targets: '1 creature', duration: '1 minute' },
+    ),
+  ];
 
-  await pdf.importCharacterSketchPng(await fetch(goblinUrl).then((res) => res.arrayBuffer()));
+  await pdf.importCharacterSketchPng(
+    await fetch(goblinUrl).then((res) => res.arrayBuffer()),
+  );
   pdf.appendFeatDetails();
 
   pdf.dataUri().then((data) => {
@@ -559,18 +720,14 @@ async function initSorcerer() {
 initSorcerer();
 // initBarbarbarian();
 
-document
-  .getElementById('sorcerer')
-  .addEventListener('click', (e) => {
-    e.preventDefault();
+document.getElementById('sorcerer').addEventListener('click', (e) => {
+  e.preventDefault();
 
-    initSorcerer();
-  });
+  initSorcerer();
+});
 
-document
-  .getElementById('barbarian')
-  .addEventListener('click', (e) => {
-    e.preventDefault();
+document.getElementById('barbarian').addEventListener('click', (e) => {
+  e.preventDefault();
 
-    initBarbarbarian();
-  });
+  initBarbarbarian();
+});

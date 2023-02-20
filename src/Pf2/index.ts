@@ -13,94 +13,28 @@ import ArmorClass from './ArmorClass';
 import ClassDC from './ClassDC';
 import Feat from './Feat';
 import FeatRecapPage from './FeatRecapPage';
+import FocusPoints from './FocusPoints';
 import HitPoints from './HitPoints';
 import InventoryItem from './InventoryItem';
 import Lore from './Lore';
+import MagicTraditions from './MagicTraditions';
 import Perception from './Perception';
 import Proficiency from './Proficiency';
 import Purse from './Purse';
 import SavingThrow from './SavingThrows';
+import SaveType from './SaveType';
 import Skill from './Skill';
+import Spell from './Spell';
+import SpellAttackDC from './SpellAttackDC';
+import SpellComponents from './SpellComponents';
+import SpellCost from './SpellCost';
+import SpellRestrictions from './SpellRestrictions';
+import SpellSlot from './SpellSlot';
+import SpellSlots from './SpellSlots';
 import Strike from './Strike';
 import WeaponProficiencies from './WeaponProficiencies';
 
 import PDF from './character_sheet.pdf';
-
-interface SpellAttackDC {
-  key: Ability;
-  attackProficiency?: Proficiency;
-  dcProficiency?: Proficiency;
-}
-
-interface MagicTraditions {
-  prepared?: boolean;
-  spontaneous ?: boolean;
-  arcane?: boolean;
-  occult?: boolean;
-  primal?: boolean;
-  divine?: boolean;
-}
-
-interface SpellSlot {
-  level: number;
-  total: number;
-  remaining: number;
-}
-
-interface SpellSlots {
-  cantripLevel: number;
-  spellSlots?: SpellSlot[];
-}
-
-interface FocusPoints {
-  current: number;
-  maximum: number;
-}
-
-enum SaveType {
-  Fortitude = 'Fortitude',
-  Will = 'Will',
-  Reflex = 'Reflex',
-}
-
-enum SpellComponents {
-  Material = 'Material',
-  Verbal = 'Verbal',
-  Somatic = 'Somatic',
-}
-
-interface SpellCost {
-  actions?: number,
-  components?: SpellComponents[],
-  focusPoints?: number
-}
-
-interface SpellRestrictions {
-  save?: SaveType,
-  range?: string,
-  area?: string,
-  targets?: string,
-  frequency?: string
-  duration?: string,
-}
-
-class Spell {
-  readonly name: string;
-  readonly description: string;
-  readonly traits: string[]
-  readonly prepared: boolean;
-  readonly spellCost: SpellCost;
-  readonly restrictions: SpellRestrictions;
-
-  constructor(name: string, description: string = null, traits: string[] = [], spellCost: SpellCost = null, prepared: boolean = false, restrictions: SpellRestrictions = null) {
-    this.name = name;
-    this.description = description;
-    this.traits = traits;
-    this.spellCost = spellCost;
-    this.prepared = prepared;
-    this.restrictions = restrictions;
-  }
-}
 
 export default class Pf2 {
   pdfDoc: PDFDocument;
@@ -634,7 +568,10 @@ export default class Pf2 {
     const spellDcValue = 10 + spellKeyBonus + spellDcProficiencyBonus;
 
     this.setTextField('SPELL_ATTACK_VALUE', spellAttackValue);
-    this.setTextField('SPELL_ATTACK_KEY_BONUS', this.formatModifier(spellKeyBonus));
+    this.setTextField(
+      'SPELL_ATTACK_KEY_BONUS',
+      this.formatModifier(spellKeyBonus),
+    );
     this.setProficiencyFields('SPELL_ATTACK_PROF', value.attackProficiency);
 
     this.setTextField('SPELL_DC_VALUE', spellDcValue);
@@ -684,7 +621,7 @@ export default class Pf2 {
   set innateSpells(value: Spell[]) {
     value.slice(0, 2).forEach((spell, idx) => {
       this.fillSpell(spell, `INN${idx + 1}`);
-    })
+    });
   }
 
   set focusPoints(value: FocusPoints) {
@@ -695,13 +632,13 @@ export default class Pf2 {
   set focusSpells(value: Spell[]) {
     value.slice(0, 4).forEach((spell, idx) => {
       this.fillSpell(spell, `FS${idx + 1}`);
-    })
+    });
   }
 
   set spells(value: Spell[]) {
     value.slice(0, 32).forEach((spell, idx) => {
       this.fillSpell(spell, `SPELL${idx + 1}`);
-    })
+    });
   }
 
   async importCharacterSketchPng(sketchData: string | ArrayBuffer) {
@@ -860,7 +797,10 @@ export default class Pf2 {
     this.setTextField(`W${idx}_ATTACK`, attackValue);
     this.setTextField(`W${idx}_KEY_BONUS`, keyAttackBonus);
     this.setProficiencyFields(`W${idx}_PROF`, strike.proficiency);
-    this.setTextField(`W${idx}_ITEM_BONUS`, this.formatModifier(strike.otherBonus));
+    this.setTextField(
+      `W${idx}_ITEM_BONUS`,
+      this.formatModifier(strike.otherBonus),
+    );
 
     this.setTextField(`W${idx}_DAMAGE_DICE`, strike.damageDice);
     this.setTextField(`W${idx}_DAMAGE_BONUS`, strike.damageBonus);
@@ -963,10 +903,10 @@ export {
   Perception,
   Proficiency,
   SavingThrow,
-    SaveType,
+  SaveType,
   Skill,
-    SpellComponents,
-    Spell,
+  SpellComponents,
+  Spell,
   Strike,
   WeaponProficiencies,
 };

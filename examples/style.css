@@ -1,6 +1,10 @@
 /** Reset */
 
-html, body, object, ul, li {
+html,
+body,
+object,
+ul,
+li {
   margin: 0;
   padding: 0;
   border: 0;
@@ -9,13 +13,15 @@ html, body, object, ul, li {
   vertical-align: baseline;
 }
 
-ol, ul {
+ol,
+ul {
   list-style: none;
 }
 
 /** Styling */
 
-html, body {
+html,
+body {
   display: flex;
   flex-direction: column;
   width: 100%;
