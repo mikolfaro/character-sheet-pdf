@@ -1,4 +1,4 @@
-import PDF from "../Pf2/character_sheet.pdf";
+import PDF from "../Familiar/sheet.pdf";
 import { PDFDocument, PDFForm } from "pdf-lib";
 
 export default class Familiar {
@@ -7,7 +7,13 @@ export default class Familiar {
     private form: PDFForm;
 
     static async create() {
+        const instance = new Familiar();
+        await instance.loadPdf();
+        return instance;
+    }
 
+    dataUri(): Promise<string> {
+        return this.pdfDoc.saveAsBase64({ dataUri: true });
     }
 
     private constructor() {}

@@ -6,7 +6,7 @@ import {
   PDFTextField,
 } from 'pdf-lib';
 
-import PDF from './character_sheet.pdf';
+import PDF from './sheet.pdf';
 
 import {
   Ability,
