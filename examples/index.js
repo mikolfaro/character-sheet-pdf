@@ -18,7 +18,6 @@ import {
   WeaponProficiencies,
 } from '../src/commons'
 import Charactersheet from '../src/Pf2'
-import Familiar from '../src/Familiar'
 
 async function initBarbarbarian() {
   const object = document.getElementById('pdf');
@@ -719,20 +718,8 @@ async function initSorcerer() {
   });
 }
 
-async function initFamiliar() {
-  const object = document.getElementById('pdf');
-  const pdf = await Familiar.create();
-
-  pdf.dataUri().then((data) => {
-    object.setAttribute('data', data);
-
-    document.getElementById('download').setAttribute('href', data);
-  });
-}
-
-// initSorcerer();
+initSorcerer();
 // initBarbarbarian();
-initFamiliar();
 
 document.getElementById('sorcerer').addEventListener('click', (e) => {
   e.preventDefault();
@@ -743,8 +730,3 @@ document.getElementById('barbarian').addEventListener('click', (e) => {
   e.preventDefault();
   initBarbarbarian();
 });
-
-document.getElementById('familiar').addEventListener('click', (e) => {
-  e.preventDefault();
-  initFamiliar();
-})
