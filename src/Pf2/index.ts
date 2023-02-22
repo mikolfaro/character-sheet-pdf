@@ -654,6 +654,10 @@ export default class Pf2 {
     featRecapPage.addFeats(this.allFeats);
   }
 
+  removeSpellPage() {
+    this.pdfDoc.removePage(3);
+  }
+
   fillBulk() {
     const bulk = Math.floor(
       this.wornItemsBulk +

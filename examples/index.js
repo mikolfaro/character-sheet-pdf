@@ -419,6 +419,8 @@ async function initBarbarbarian() {
 
   pdf.appendFeatDetails();
 
+  pdf.removeSpellPage();
+
   pdf.dataUri().then((data) => {
     object.setAttribute('data', data);
   });
