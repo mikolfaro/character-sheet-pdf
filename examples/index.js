@@ -1,4 +1,7 @@
-import Pf2, {
+import './style.css';
+import sketchUrl from './Iconic_Amiri.png';
+import goblinUrl from './Goblin02.png';
+import {
   Ability,
   AbilityScores,
   Action,
@@ -9,20 +12,17 @@ import Pf2, {
   Proficiency,
   SaveType,
   SavingThrow,
-  Skill,
-  Spell,
+  Skill, Spell,
   SpellComponents,
   Strike,
   WeaponProficiencies,
-} from '../src/Pf2';
-
-import './style.css';
-import sketchUrl from './Iconic_Amiri.png';
-import goblinUrl from './Goblin02.png';
+} from '../src/commons'
+import Charactersheet from '../src/Pf2'
+import Familiar from '../src/Familiar'
 
 async function initBarbarbarian() {
   const object = document.getElementById('pdf');
-  const pdf = await Pf2.create();
+  const pdf = await Charactersheet.create();
 
   // First page
 
@@ -717,17 +717,32 @@ async function initSorcerer() {
   });
 }
 
+async function initFamiliar() {
+  const object = document.getElementById('pdf');
+  const pdf = await Familiar.create();
+
+  pdf.dataUri().then((data) => {
+    object.setAttribute('data', data);
+
+    document.getElementById('download').setAttribute('href', data);
+  });
+}
+
 // initSorcerer();
-initBarbarbarian();
+// initBarbarbarian();
+initFamiliar();
 
 document.getElementById('sorcerer').addEventListener('click', (e) => {
   e.preventDefault();
-
   initSorcerer();
 });
 
 document.getElementById('barbarian').addEventListener('click', (e) => {
   e.preventDefault();
-
   initBarbarbarian();
 });
+
+document.getElementById('familiar').addEventListener('click', (e) => {
+  e.preventDefault();
+  initFamiliar();
+})
