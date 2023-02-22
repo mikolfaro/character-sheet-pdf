@@ -6,35 +6,25 @@ import {
   PDFTextField,
 } from 'pdf-lib';
 
-import Ability from './Ability';
-import AbilityScores from './AbilityScore';
-import Action from './Action';
-import ArmorClass from './ArmorClass';
-import ClassDC from './ClassDC';
-import Feat from './Feat';
-import FeatRecapPage from './FeatRecapPage';
-import FocusPoints from './FocusPoints';
-import HitPoints from './HitPoints';
-import InventoryItem from './InventoryItem';
-import Lore from './Lore';
-import MagicTraditions from './MagicTraditions';
-import Perception from './Perception';
-import Proficiency from './Proficiency';
-import Purse from './Purse';
-import SavingThrow from './SavingThrows';
-import SaveType from './SaveType';
-import Skill from './Skill';
-import Spell from './Spell';
-import SpellAttackDC from './SpellAttackDC';
-import SpellComponents from './SpellComponents';
-import SpellCost from './SpellCost';
-import SpellRestrictions from './SpellRestrictions';
-import SpellSlot from './SpellSlot';
-import SpellSlots from './SpellSlots';
-import Strike from './Strike';
-import WeaponProficiencies from './WeaponProficiencies';
-
 import PDF from './character_sheet.pdf';
+
+import {
+  Ability,
+  AbilityScores,
+  Action,
+  ArmorClass,
+  ClassDC,
+  Feat, FocusPoints,
+  HitPoints, InventoryItem,
+  Lore, MagicTraditions,
+  Perception,
+  Proficiency, Purse,
+  SavingThrow,
+  Skill, Spell, SpellAttackDC, SpellComponents, SpellSlot, SpellSlots, Strike,
+  WeaponProficiencies
+} from "../commons";
+
+import FeatRecapPage from "../Pages/FeatRecapPage";
 
 export default class Pf2 {
   pdfDoc: PDFDocument;
@@ -896,21 +886,3 @@ export default class Pf2 {
     }
   }
 }
-
-export {
-  Ability,
-  AbilityScores,
-  Action,
-  ArmorClass,
-  HitPoints,
-  Lore,
-  Perception,
-  Proficiency,
-  SavingThrow,
-  SaveType,
-  Skill,
-  SpellComponents,
-  Spell,
-  Strike,
-  WeaponProficiencies,
-};
