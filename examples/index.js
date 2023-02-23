@@ -296,7 +296,6 @@ async function initBarbarbarian() {
       'CR.140',
       'You lash out at a foe that leaves an opening. Make a melee Strike against the triggering creature. If your attack is a critical hit and the trigger was a manipulate action, you disrupt that action.',
       'A creature within your reach uses a manipulate action or a move action, makes a ranged attack, or leaves a square during a move action it’s using.',
-      'once per day',
     ),
     new Action(
       'Bounce Back',

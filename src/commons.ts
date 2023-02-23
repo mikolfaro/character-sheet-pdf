@@ -45,7 +45,7 @@ export class Action {
     readonly page: string | null;
     readonly description: string;
     readonly trigger: string;
-    readonly oncePerDay: string;
+    readonly frequency: string;
     readonly requirements: string;
 
     constructor(
@@ -57,7 +57,7 @@ export class Action {
         page: string = null,
         description: string = null,
         trigger: string = null,
-        oncePerDay: string = null,
+        frequency: string = null,
         requirements: string = null,
     ) {
         this.name = name;
@@ -68,7 +68,7 @@ export class Action {
         this.page = page;
         this.description = description;
         this.trigger = trigger;
-        this.oncePerDay = oncePerDay;
+        this.frequency = frequency;
         this.requirements = requirements;
     }
 }
