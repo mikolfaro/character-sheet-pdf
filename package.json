@@ -11,6 +11,7 @@
     "lint:prettier": "prettier --write \"./{src,tests,examples}/**/*.{ts,js,json,html,css}\" --loglevel error"
   },
   "dependencies": {
+    "@pdf-lib/fontkit": "^1.1.1",
     "pdf-lib": "^1.17.1"
   },
   "devDependencies": {

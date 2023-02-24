@@ -28,6 +28,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         [null, {\
           "packageLocation": "./",\
           "packageDependencies": [\
+            ["@pdf-lib/fontkit", "npm:1.1.1"],\
             ["@types/node", "npm:18.14.0"],\
             ["@types/node-fetch", "npm:2.6.2"],\
             ["css-loader", "virtual:1086b7a996d64fea88d55f744fc4512800e0207309f8dcff13e41c93e2ec62cd6bd281437a0cd882bad4df36b3e4f7b11cc4d32fc333e912014c872e93dfdf5f#npm:6.7.3"],\
@@ -186,6 +187,16 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@npmcli/move-file", "npm:2.0.1"],\
             ["mkdirp", "npm:1.0.4"],\
             ["rimraf", "npm:3.0.2"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["@pdf-lib/fontkit", [\
+        ["npm:1.1.1", {\
+          "packageLocation": "./.yarn/cache/@pdf-lib-fontkit-npm-1.1.1-67168fc271-e37b818ef2.zip/node_modules/@pdf-lib/fontkit/",\
+          "packageDependencies": [\
+            ["@pdf-lib/fontkit", "npm:1.1.1"],\
+            ["pako", "npm:1.0.11"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -1232,6 +1243,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageLocation": "./",\
           "packageDependencies": [\
             ["character-sheet-pdf", "workspace:."],\
+            ["@pdf-lib/fontkit", "npm:1.1.1"],\
             ["@types/node", "npm:18.14.0"],\
             ["@types/node-fetch", "npm:2.6.2"],\
             ["css-loader", "virtual:1086b7a996d64fea88d55f744fc4512800e0207309f8dcff13e41c93e2ec62cd6bd281437a0cd882bad4df36b3e4f7b11cc4d32fc333e912014c872e93dfdf5f#npm:6.7.3"],\

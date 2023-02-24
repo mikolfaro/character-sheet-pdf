@@ -8,9 +8,13 @@ module.exports = {
         exclude: /node_modules/,
       },
       {
-        test: /\.pdf$/,
+        test: /\.pdf$|\.ttf/,
         type: "asset/inline",
       },
+      {
+        test: /embedded\.js/,
+        type: 'asset/source',
+      }
     ],
   },
   resolve: {

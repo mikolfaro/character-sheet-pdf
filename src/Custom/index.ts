@@ -9,31 +9,21 @@ import {
   ArmorClass,
   ClassDC,
   Feat,
-  FocusPoints,
-  HitPoints,
-  InventoryItem,
+  HitPoints, InventoryItem,
   Lore,
-  MagicTraditions,
   Perception,
-  Proficiency,
-  Purse,
+  Proficiency, Purse,
   SavingThrow,
   Shield,
   Skill,
-  Spell,
-  SpellAttackDC,
-  SpellComponents,
-  SpellSlot,
-  SpellSlots,
-  Strike,
+  Strike, Supplies,
   WeaponProficiencies,
 } from '../commons';
 
-import FeatRecapPage from '../Pages/FeatRecapPage';
 import Form from '../Form';
-import Base from "../Base";
+import Base from '../Base';
 
-export default class Pf2 extends Base {
+export default class Custom extends Base {
   private pdfDoc: PDFDocument;
 
   private _abilityScores: AbilityScores;
@@ -61,7 +51,7 @@ export default class Pf2 extends Base {
    * @param name
    */
   set playerName(name: string) {
-    this.setTextField('PLAYER_NAME', name);
+    this.form.setTextField('PLAYER_NAME', name);
   }
 
   /**
@@ -69,7 +59,7 @@ export default class Pf2 extends Base {
    * @param value
    */
   set ancestryAndHeritage(value: string) {
-    this.setTextField('ANCESTRY', value);
+    this.form.setTextField('ANCESTRY', value);
   }
 
   /**
@@ -77,7 +67,7 @@ export default class Pf2 extends Base {
    * @param value
    */
   set class(value: string) {
-    this.setTextField('CLASS', value);
+    this.form.setTextField('CLASS', value);
   }
 
   /**
@@ -85,7 +75,7 @@ export default class Pf2 extends Base {
    * @param value
    */
   set background(value: string) {
-    this.setTextField('BACKGROUND', value);
+    this.form.setTextField('BACKGROUND', value);
   }
 
   /**
@@ -93,7 +83,7 @@ export default class Pf2 extends Base {
    * @param value
    */
   set size(value: string) {
-    this.setTextField('SIZE', value);
+    this.form.setTextField('SIZE', value);
   }
 
   /**
@@ -111,7 +101,7 @@ export default class Pf2 extends Base {
   set abilityScores(scores: AbilityScores) {
     this._abilityScores = scores;
     for (const [ability, value] of this._abilityScores.entries()) {
-      this.setTextField(`${ability}_SCORE`, value);
+      this.form.setTextField(`${ability}_SCORE`, value);
       this.setModField(`${ability}_MOD`, scores.modifier(ability));
     }
   }
@@ -121,7 +111,7 @@ export default class Pf2 extends Base {
    * @param value
    */
   set alignment(value: string) {
-    this.setTextField('ALIGNMENT', value);
+    this.form.setTextField('ALIGNMENT', value);
   }
 
   /**
@@ -132,7 +122,7 @@ export default class Pf2 extends Base {
    * @param value
    */
   set traits(value: string | string[]) {
-    this.setTextField('TRAITS', value);
+    this.form.setTextField('TRAITS', value);
   }
 
   /**
@@ -140,7 +130,7 @@ export default class Pf2 extends Base {
    * @param value
    */
   set deity(value: string) {
-    this.setTextField('DEITY', value);
+    this.form.setTextField('DEITY', value);
   }
 
   /**
@@ -161,7 +151,7 @@ export default class Pf2 extends Base {
    * @param value
    */
   set heroPoints(value: number) {
-    this.setTextField('HERO_POINTS', value);
+    this.form.setTextField('HERO_POINTS', value);
   }
 
   /**
@@ -169,7 +159,7 @@ export default class Pf2 extends Base {
    * @param value
    */
   set experiencePointsXp(value: number) {
-    this.setTextField('EXPERIENCE_POINTS_XP', value);
+    this.form.setTextField('EXPERIENCE_POINTS_XP', value);
   }
 
   /**
@@ -189,14 +179,17 @@ export default class Pf2 extends Base {
       : 0;
     const dcValue = 10 + modBonus + profBonus + (value.otherBonus || 0);
 
-    this.setTextField('DC_VALUE', dcValue);
-    this.setTextField('DC_KEY_BONUS', this.formatModifier(modBonus));
+    this.form.setTextField('DC_VALUE', dcValue);
+    this.form.setTextField('DC_KEY_BONUS', this.formatModifier(modBonus));
     if (value.proficiency) {
       this.setProficiencyFields('DC_PROF', value.proficiency);
     }
 
     if (value.otherBonus) {
-      this.setTextField('DC_ITEM_BONUS', this.formatModifier(value.otherBonus));
+      this.form.setTextField(
+        'DC_ITEM_BONUS',
+        this.formatModifier(value.otherBonus),
+      );
     }
   }
 
@@ -280,11 +273,11 @@ export default class Pf2 extends Base {
   }
 
   set hitPoints(value: HitPoints) {
-    this.setTextField('HP_MAX', value.max);
-    this.setTextField('HP_CURRENT', value.current);
-    this.setTextField('TEMPORARY', value.temporary);
-    this.setTextField('DYING', value.dying);
-    this.setTextField('WOUNDED', value.wounded);
+    this.form.setTextField('HP_MAX', value.max);
+    this.form.setTextField('HP_CURRENT', value.current);
+    this.form.setTextField('TEMPORARY', value.temporary);
+    this.form.setTextField('DYING', value.dying);
+    this.form.setTextField('WOUNDED', value.wounded);
 
     this.form.setTextField('RESISTANCES', value.resistances);
     this.form.setTextField('CONDITIONS', value.conditions);
@@ -297,22 +290,22 @@ export default class Pf2 extends Base {
       : 0;
     const perceptionValue = modBonus + profBonus + (value.otherBonus || 0);
 
-    this.setTextField('PERCEPTION_VALUE', perceptionValue);
+    this.form.setTextField('PERCEPTION_VALUE', perceptionValue);
     this.setProficiencyFields('PERCEPTION_PROF', value.proficiency);
-    this.setTextField(
+    this.form.setTextField(
       'PERCEPTION_ITEM_BONUS',
       this.formatModifier(value.otherBonus),
     );
 
-    this.setTextField('SENSES', value.senses);
+    this.form.setTextField('SENSES', value.senses);
   }
 
   set speed(value: number) {
-    this.setTextField('SPEED', value);
+    this.form.setTextField('SPEED', value);
   }
 
   set movementNotes(value: string) {
-    this.setTextField('MOVEMENT_NOTES', value);
+    this.form.setTextField('MOVEMENT_NOTES', value);
   }
 
   set acrobatics(value: Skill) {
@@ -380,13 +373,18 @@ export default class Pf2 extends Base {
   }
 
   set lore1(value: Lore) {
-    this.setTextField('LORE_DESC_1', value.name);
+    this.form.setTextField('LORE_DESC_1', value.name);
     this.setSkill(value, Ability.INT, 'LORE_1');
   }
 
   set lore2(value: Lore) {
-    this.setTextField('LORE_DESC_2', value.name);
+    this.form.setTextField('LORE_DESC_2', value.name);
     this.setSkill(value, Ability.INT, 'LORE_2');
+  }
+
+  set lore3(value: Lore) {
+    this.form.setTextField('LORE_DESC_3', value.name);
+    this.setSkill(value, Ability.INT, 'LORE_3');
   }
 
   set meleeStrikes(value: Strike[]) {
@@ -405,237 +403,21 @@ export default class Pf2 extends Base {
   set weaponProficiencies(value: WeaponProficiencies) {
     this.setProficiencyFields('WP_SIMPLE', value.simple);
     this.setProficiencyFields('WP_MARTIAL', value.martial);
-
-    if (value.unarmed) {
-      value.other ||= new Map<string, Proficiency>();
-      value.other.set('Unarmed', value.unarmed);
-    }
+    this.setProficiencyFields('WP_UNARMED', value.unarmed);
 
     if (value.other) {
-      const inverseMap = new Map<Proficiency, string[]>();
-      for (const [name, prof] of value.other.entries()) {
-        if (inverseMap.has(prof)) {
-          inverseMap.get(prof).push(name);
-        } else {
-          inverseMap.set(prof, [name]);
-        }
-      }
-
       let count = 1;
-      [Proficiency.L, Proficiency.M, Proficiency.E, Proficiency.T].forEach(
-        (prof) => {
-          if (count > 2) {
-            return;
-          }
+      for (const [name, prof] of value.other.entries()) {
+        this.setProficiencyFields(`WP_OTHER_${count}`, prof);
+        this.setTextField(`WP_OTHER_${count}_DESC`, name);
 
-          if (inverseMap.has(prof)) {
-            const weapons = inverseMap.get(prof).sort();
-            this.setProficiencyFields(`WP_OTHER_${count}`, prof);
-            this.setTextField(`WP_OTHER_${count}_DESC`, weapons);
-
-            count++;
-          }
-        },
-      );
+        count += 1;
+      }
     }
   }
 
   set languages(value: string[]) {
-    this.setTextField('LANGUAGES', value);
-  }
-
-  set ancestryFeat1(value: Feat[] | Feat) {
-    this.setFeatFields(value, `AF_1`);
-  }
-
-  set ancestryFeatS1(value: Feat[] | Feat) {
-    this.setFeatFields(value, `AF_S1`);
-  }
-
-  set heritageFeat1(value: Feat[] | Feat) {
-    this.setFeatFields(value, `AF_H1`);
-  }
-
-  set ancestryFeat5(value: Feat[] | Feat) {
-    this.setFeatFields(value, `AF_5`);
-  }
-
-  set ancestryFeat9(value: Feat[] | Feat) {
-    this.setFeatFields(value, `AF_9`);
-  }
-
-  set ancestryFeat13(value: Feat[] | Feat) {
-    this.setFeatFields(value, `AF_13`);
-  }
-
-  set ancestryFeat17(value: Feat[] | Feat) {
-    this.setFeatFields(value, `AF_17`);
-  }
-
-  set skillFeatB(value: Feat[] | Feat) {
-    this.setFeatFields(value, `SF_B`);
-  }
-
-  set skillFeat2(value: Feat[] | Feat) {
-    this.setFeatFields(value, `SF_2`);
-  }
-
-  set skillFeat4(value: Feat[] | Feat) {
-    this.setFeatFields(value, `SF_4`);
-  }
-
-  set skillFeat6(value: Feat[] | Feat) {
-    this.setFeatFields(value, `SF_6`);
-  }
-
-  set skillFeat8(value: Feat[] | Feat) {
-    this.setFeatFields(value, `SF_8`);
-  }
-
-  set skillFeat10(value: Feat[] | Feat) {
-    this.setFeatFields(value, `SF_10`);
-  }
-
-  set skillFeat12(value: Feat[] | Feat) {
-    this.setFeatFields(value, `SF_12`);
-  }
-
-  set skillFeat14(value: Feat[] | Feat) {
-    this.setFeatFields(value, `SF_14`);
-  }
-
-  set skillFeat16(value: Feat[] | Feat) {
-    this.setFeatFields(value, `SF_16`);
-  }
-
-  set skillFeat18(value: Feat[] | Feat) {
-    this.setFeatFields(value, `SF_18`);
-  }
-
-  set skillFeat20(value: Feat[] | Feat) {
-    this.setFeatFields(value, `SF_20`);
-  }
-
-  set generalFeat3(value: Feat[] | Feat) {
-    this.setFeatFields(value, `GF_3`);
-  }
-
-  set generalFeat7(value: Feat[] | Feat) {
-    this.setFeatFields(value, `GF_7`);
-  }
-
-  set generalFeat11(value: Feat[] | Feat) {
-    this.setFeatFields(value, `GF_11`);
-  }
-
-  set generalFeat15(value: Feat[] | Feat) {
-    this.setFeatFields(value, `GF_15`);
-  }
-
-  set generalFeat19(value: Feat[] | Feat) {
-    this.setFeatFields(value, `GF_19`);
-  }
-
-  set classFeat1(value: Feat[] | Feat) {
-    this.setFeatFields(value, `CF_1`);
-  }
-
-  set classFeat2(value: Feat[] | Feat) {
-    this.setFeatFields(value, `CF_2`);
-  }
-
-  set classFeat4(value: Feat[] | Feat) {
-    this.setFeatFields(value, `CF_4`);
-  }
-
-  set classFeat6(value: Feat[] | Feat) {
-    this.setFeatFields(value, `CF_6`);
-  }
-
-  set classFeat8(value: Feat[] | Feat) {
-    this.setFeatFields(value, `CF_8`);
-  }
-
-  set classFeat10(value: Feat[] | Feat) {
-    this.setFeatFields(value, `CF_10`);
-  }
-
-  set classFeat12(value: Feat[] | Feat) {
-    this.setFeatFields(value, `CF_12`);
-  }
-
-  set classFeat14(value: Feat[] | Feat) {
-    this.setFeatFields(value, `CF_14`);
-  }
-
-  set classFeat16(value: Feat[] | Feat) {
-    this.setFeatFields(value, `CF_16`);
-  }
-
-  set classFeat18(value: Feat[] | Feat) {
-    this.setFeatFields(value, `CF_18`);
-  }
-
-  set classFeat20(value: Feat[] | Feat) {
-    this.setFeatFields(value, `CF_20`);
-  }
-
-  set bonusFeats(value: Feat[] | Feat) {
-    const values = Array.isArray(value) ? value : [value];
-    this.allFeats.push(...values);
-
-    const names = values.map((aValue) => aValue.name).sort();
-
-    const half = names.length / 2 + 1;
-    const name1 = names.slice(0, half);
-    const name2 = names.slice(half);
-
-    this.setTextField(`BF_1`, name1);
-    this.setTextField(`BF_2`, name2);
-  }
-
-  set classFeature1_1(value: Feat[] | Feat) {
-    this.setFeatFields(value, `FEATURE_1_1`);
-  }
-
-  set classFeature1_2(value: Feat[] | Feat) {
-    this.setFeatFields(value, `FEATURE_1_2`);
-  }
-
-  set classFeature3(value: Feat[] | Feat) {
-    this.setFeatFields(value, `FEATURE_3`);
-  }
-
-  set classFeature5(value: Feat[] | Feat) {
-    this.setFeatFields(value, `FEATURE_5`);
-  }
-
-  set classFeature7(value: Feat[] | Feat) {
-    this.setFeatFields(value, `FEATURE_7`);
-  }
-
-  set classFeature9(value: Feat[] | Feat) {
-    this.setFeatFields(value, `FEATURE_9`);
-  }
-
-  set classFeature11(value: Feat[] | Feat) {
-    this.setFeatFields(value, `FEATURE_11`);
-  }
-
-  set classFeature13(value: Feat[] | Feat) {
-    this.setFeatFields(value, `FEATURE_13`);
-  }
-
-  set classFeature15(value: Feat[] | Feat) {
-    this.setFeatFields(value, `FEATURE_15`);
-  }
-
-  set classFeature17(value: Feat[] | Feat) {
-    this.setFeatFields(value, `FEATURE_17`);
-  }
-
-  set classFeature19(value: Feat[] | Feat) {
-    this.setFeatFields(value, `FEATURE_19`);
+    this.form.setTextField('LANGUAGES', value);
   }
 
   set wornItems(items: InventoryItem[]) {
@@ -648,6 +430,28 @@ export default class Pf2 extends Base {
 
   set otherItems(items: InventoryItem[]) {
     this.setItems(items, 'OTHER_ITEMS');
+  }
+
+  set supplies(supplies: Supplies) {
+    this.setTextField('CHALK', supplies.chalk);
+    this.setTextField('RATIONS', supplies.rations);
+    this.setTextField('ROPE', supplies.rope);
+    this.setTextField('TORCHES', supplies.torches);
+    this.setTextField('WATER', supplies.water);
+
+    if (supplies.other) {
+      let i = 1;
+      for (const [key, value] of supplies.other.entries()) {
+        this.setTextField(`OTHER_SUPPLY_${i}_DESC`, key);
+        this.setTextField(`OTHER_SUPPLY_${i}_COUNT`, value);
+
+        if (i >= 3) {
+          break;
+        }
+
+        i++;
+      }
+    }
   }
 
   set purse(purse: Purse) {
@@ -689,110 +493,14 @@ export default class Pf2 extends Base {
     });
   }
 
-  set spellAttack(value: SpellAttackDC) {
-    const spellKeyBonus = this._abilityScores.modifier(value.key);
-    const spellAttackProfiencyBonus = value.attackProficiency.bonus(
-      this._level,
-    );
-    const spellAttackValue = spellKeyBonus + spellAttackProfiencyBonus;
-    const spellDcProficiencyBonus = value.dcProficiency.bonus(this._level);
-    const spellDcValue = 10 + spellKeyBonus + spellDcProficiencyBonus;
-
-    this.setTextField('SPELL_ATTACK_VALUE', spellAttackValue);
-    this.setTextField(
-      'SPELL_ATTACK_KEY_BONUS',
-      this.formatModifier(spellKeyBonus),
-    );
-    this.setProficiencyFields('SPELL_ATTACK_PROF', value.attackProficiency);
-
-    this.setTextField('SPELL_DC_VALUE', spellDcValue);
-    this.setTextField('SPELL_DC_KEY_BONUS', this.formatModifier(spellKeyBonus));
-    this.setProficiencyFields('SPELL_DC_PROF', value.dcProficiency);
-  }
-
-  set magicTraditions(value: MagicTraditions) {
-    if (value.prepared) {
-      this.setCheckBox('PREPARED');
-    }
-
-    if (value.spontaneous) {
-      this.setCheckBox('SPONTANEOUS');
-    }
-
-    if (value.arcane) {
-      this.setCheckBox('ARCANE');
-    }
-
-    if (value.occult) {
-      this.setCheckBox('OCCULT');
-    }
-
-    if (value.divine) {
-      this.setCheckBox('DIVINE');
-    }
-
-    if (value.primal) {
-      this.setCheckBox('PRIMAL');
-    }
-  }
-
-  set spellSlots(value: SpellSlots) {
-    this.setTextField('CANTRIP_LEVEL', value.cantripLevel);
-    value.spellSlots.forEach((spellSlot) => {
-      this.fillSpellSlot(spellSlot);
-    });
-  }
-
-  set cantrips(value: Spell[]) {
-    this.hasSpells = true;
-
-    value.slice(0, 7).forEach((cantrip, idx) => {
-      this.fillSpell(cantrip, `CAN${idx + 1}`);
-    });
-  }
-
-  set innateSpells(value: Spell[]) {
-    this.hasSpells = true;
-
-    value.slice(0, 2).forEach((spell, idx) => {
-      this.fillSpell(spell, `INN${idx + 1}`);
-    });
-  }
-
-  set focusPoints(value: FocusPoints) {
-    this.hasSpells = true;
-
-    this.setTextField('FOCUS_POINTS_CURRENT', value.current);
-    this.setTextField('FOCUS_POINTS_MAXIMUM', value.maximum);
-  }
-
-  set focusSpells(value: Spell[]) {
-    this.hasSpells = true;
-
-    value.slice(0, 4).forEach((spell, idx) => {
-      this.fillSpell(spell, `FS${idx + 1}`);
-    });
-  }
-
-  set spells(value: Spell[]) {
-    this.hasSpells = true;
-    value.slice(0, 32).forEach((spell, idx) => {
-      this.fillSpell(spell, `SPELL${idx + 1}`);
-    });
-  }
-
   private async importCharacterSketchPng(sketchData: string | ArrayBuffer) {
     const characterSketch = await this.pdfDoc.embedPng(sketchData);
     this.form.setImageField('CHARACTER_SKETCH', characterSketch);
   }
 
-  removeSpellPage() {
-    this.pdfDoc.removePage(3);
-  }
-
   appendFeatDetails() {
-    const featRecapPage = new FeatRecapPage(this.pdfDoc);
-    featRecapPage.addFeats(this.allFeats);
+    // const featRecapPage = new FeatRecapPage(this.pdfDoc);
+    // featRecapPage.addFeats(this.allFeats);
   }
 
   fillBulk() {
@@ -817,18 +525,14 @@ export default class Pf2 extends Base {
     }
 
     this.appendFeatDetails();
-
-    if (!this.hasSpells) {
-      this.removeSpellPage();
-    }
   }
 
   dataUrl(): Promise<string> {
     return this.pdfDoc.saveAsBase64({ dataUri: true });
   }
 
-  static async create(): Promise<Pf2> {
-    const instance = new Pf2();
+  static async create(): Promise<Custom> {
+    const instance = new Custom();
     await instance.loadPdf();
     return instance;
   }
@@ -853,9 +557,9 @@ export default class Pf2 extends Base {
       : 0;
     const saveValue = modBonus + profBonus + (value.otherBonus || 0);
 
-    this.setTextField(`${fieldName}_VALUE`, saveValue);
+    this.form.setTextField(`${fieldName}_VALUE`, saveValue);
     this.setProficiencyFields(`${fieldName}_PROF`, value.proficiency);
-    this.setTextField(
+    this.form.setTextField(
       `${fieldName}_ITEM_BONUS`,
       this.formatModifier(value.otherBonus),
     );
@@ -869,13 +573,10 @@ export default class Pf2 extends Base {
     const skillValue =
       modBonus + profBonus + (value.otherBonus || 0) - (value.armorMalus || 0);
 
-    this.setTextField(`${skillName}_VALUE`, skillValue);
+    this.form.setTextField(`${skillName}_VALUE`, skillValue);
     this.setProficiencyFields(`${skillName}_PROF`, value.proficiency);
-    this.setTextField(
-      `${skillName}_ITEM_BONUS`,
-      this.formatModifier(value.otherBonus),
-    );
-    this.setTextField(`${skillName}_ARMOR_BONUS`, value.armorMalus);
+    this.form.setTextField(`${skillName}_ITEM_BONUS`, value.otherBonus);
+    this.form.setTextField(`${skillName}_ARMOR_BONUS`, value.armorMalus);
   }
 
   private setStrike(strike: Strike, idx: number) {
@@ -887,16 +588,15 @@ export default class Pf2 extends Base {
     this.setTextField(`W${idx}_ATTACK`, attackValue);
     this.setTextField(`W${idx}_KEY_BONUS`, keyAttackBonus);
     this.setProficiencyFields(`W${idx}_PROF`, strike.proficiency);
-    this.setTextField(
-      `W${idx}_ITEM_BONUS`,
-      this.formatModifier(strike.otherBonus),
-    );
+    this.setTextField(`W${idx}_ITEM_BONUS`, strike.otherBonus);
 
     this.setTextField(`W${idx}_DAMAGE_DICE`, strike.damageDice);
     this.setTextField(`W${idx}_DAMAGE_BONUS`, strike.damageBonus);
     this.setCheckBox(`W${idx}_${strike.damageType}`);
     this.setTextField(`W${idx}_OTHER`, strike.other);
     this.setTextField(`W${idx}_TRAITS`, strike.traits);
+    this.setTextField(`W${idx}_CRITICAL`, strike.critical);
+    this.setTextField(`W${idx}_NOTES`, strike.notes);
   }
 
   private setItems(items: InventoryItem[], itemField: string) {
@@ -914,14 +614,6 @@ export default class Pf2 extends Base {
     this.setTextField(`${itemField}_LIST`, itemLines.join('\n'));
     this.setTextField(`${itemField}_INVEST`, investLines.join('\n'));
     this.setTextField(`${itemField}_BULK`, bulkLine.join('\n'));
-  }
-
-  private setFeatFields(value: Feat[] | Feat, fieldName: string) {
-    const values = Array.isArray(value) ? value : [value];
-    this.allFeats.push(...values);
-
-    const names = values.map((aValue) => aValue.name).sort();
-    this.setTextField(fieldName, names);
   }
 
   private fillAction(action: Action, fieldName: string) {
@@ -944,34 +636,6 @@ export default class Pf2 extends Base {
 
     if (action.reaction) {
       this.setCheckBox(`${fieldName}_REACTION`);
-    }
-  }
-
-  private fillSpellSlot(spellSlot: SpellSlot) {
-    this.setTextField(`SS${spellSlot.level}_MAX`, spellSlot.total);
-    this.setTextField(`SS${spellSlot.level}_REMAINING`, spellSlot.remaining);
-  }
-
-  private fillSpell(spell: Spell, fieldName: string) {
-    this.setTextField(`${fieldName}_NAME`, spell.name);
-    this.setTextField(`${fieldName}_DESCRIPTION`, spell.description);
-    this.setTextField(`${fieldName}_ACTIONS`, spell.spellCost?.actions);
-    this.setTextField(`${fieldName}_FREQ`, spell.restrictions?.frequency);
-
-    if (spell.prepared) {
-      this.setCheckBox(`${fieldName}_PREP`);
-    }
-
-    if (spell.spellCost?.components?.includes(SpellComponents.Material)) {
-      this.setCheckBox(`${fieldName}_M`);
-    }
-
-    if (spell.spellCost?.components?.includes(SpellComponents.Somatic)) {
-      this.setCheckBox(`${fieldName}_S`);
-    }
-
-    if (spell.spellCost?.components?.includes(SpellComponents.Verbal)) {
-      this.setCheckBox(`${fieldName}_V`);
     }
   }
 }
