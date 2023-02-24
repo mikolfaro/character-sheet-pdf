@@ -26,12 +26,9 @@ export default class FeatRecapPage {
   }
 
   addFeats(feats: Feat[]) {
-    console.log(feats);
-
     if (feats.length > this.availableFieldCount) {
       const extraPagesNeeded =
         (feats.length - this.availableFieldCount) / this.FIELDS_PER_PAGE;
-      console.log(extraPagesNeeded);
       this.appendExtraPages(extraPagesNeeded);
     }
 
@@ -107,11 +104,11 @@ export default class FeatRecapPage {
         height: 50,
         width: fieldWidth,
       });
-      rightDescriptionField.setFontSize(8);
       rightDescriptionField.enableMultiline();
+      rightDescriptionField.disableScrolling();
+      rightDescriptionField.setFontSize(8);
     }
 
-    console.log('Added fields', this.availableFieldCount, this.FIELDS_PER_PAGE);
     this.availableFieldCount += this.FIELDS_PER_PAGE;
   }
 

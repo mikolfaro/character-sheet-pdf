@@ -73,51 +73,23 @@ export class Action {
     }
 }
 
-export class ArmorClass {
-    cap: number | null;
-    unarmored: Proficiency;
-    light = Proficiency.U;
-    medium = Proficiency.U;
-    heavy = Proficiency.U;
-    current = Proficiency.U;
-    otherBonus: number | null;
-
-    constructor(
-        cap: number | null = null,
-        unarmored = Proficiency.U,
-        light = Proficiency.U,
-        medium = Proficiency.U,
-        heavy = Proficiency.U,
-        current = Proficiency.U,
-        otherBonus: number | null = null,
-    ) {
-        this.cap = cap;
-        this.unarmored = unarmored;
-        this.light = light;
-        this.medium = medium;
-        this.heavy = heavy;
-        this.current = current;
-        this.otherBonus = otherBonus;
-    }
+export interface ArmorClass {
+    cap?: number;
+    unarmored?: Proficiency;
+    light?: Proficiency;
+    medium?: Proficiency;
+    heavy?: Proficiency;
+    current?: Proficiency;
+    otherBonus?: number;
 }
 
-export class ClassDC {
+export interface ClassDC {
     keyAbility: Ability;
-    proficiency: Proficiency;
-    otherBonus: number | null;
-
-    constructor(
-        keyAbility: Ability,
-        proficiency: Proficiency = Proficiency.U,
-        otherBonus: number | null = null,
-    ) {
-        this.keyAbility = keyAbility;
-        this.proficiency = proficiency;
-        this.otherBonus = otherBonus;
-    }
+    proficiency?: Proficiency;
+    otherBonus?: number;
 }
 
-export class Feat {
+export interface Feat {
     name: string;
     description?: string;
 }
@@ -127,32 +99,14 @@ export interface FocusPoints {
     maximum: number;
 }
 
-export class HitPoints {
+export interface HitPoints {
     max: number;
     current: number;
-    temporary: number | null = null;
-    dying: number | null = null;
-    wounded: number | null = null;
-    resistances: string[] = [];
-    conditions: string[] = [];
-
-    constructor(
-        max: number,
-        current: number,
-        temporary: number | null = null,
-        dying: number | null = null,
-        wounded: number | null = null,
-        resistances: string[] | string = [],
-        conditions: string[] | string = [],
-    ) {
-        this.max = max;
-        this.current = current;
-        this.temporary = temporary;
-        this.dying = dying;
-        this.wounded = wounded;
-        this.resistances = Array.isArray(resistances) ? resistances : [resistances];
-        this.conditions = Array.isArray(conditions) ? conditions : [conditions];
-    }
+    temporary?: number;
+    dying?: number;
+    wounded?: number;
+    resistances?: string[];
+    conditions?: string[];
 }
 
 export interface InventoryItem {
@@ -172,20 +126,10 @@ export interface MagicTraditions {
     divine?: boolean;
 }
 
-export class Perception {
-    proficiency: Proficiency;
-    otherBonus: number | null;
-    senses: string[];
-
-    constructor(
-        proficency: Proficiency = Proficiency.U,
-        otherBonus: number | null = null,
-        senses: string | string[] = [],
-    ) {
-        this.proficiency = proficency;
-        this.otherBonus = otherBonus;
-        this.senses = Array.isArray(senses) ? senses : [senses];
-    }
+export interface Perception {
+    proficiency?: Proficiency;
+    otherBonus?: number;
+    senses?: string[] | string;
 }
 
 export class Proficiency {
@@ -225,14 +169,9 @@ export enum SaveType {
     Reflex = 'Reflex',
 }
 
-export class SavingThrow {
-    proficiency: Proficiency;
-    otherBonus: number;
-
-    constructor(proficiency: Proficiency, otherBonus: number | null = null) {
-        this.proficiency = proficiency;
-        this.otherBonus = otherBonus;
-    }
+export interface SavingThrow {
+    proficiency?: Proficiency;
+    otherBonus?: number;
 }
 
 export class Skill {

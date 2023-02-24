@@ -32,6 +32,7 @@ export default class Pf2 {
 
   _abilityScores: AbilityScores;
   _level: number;
+  sketchPngUrl: string;
 
   allFeats: Feat[] = [];
   private characterSketch: PDFImage;
@@ -41,31 +42,68 @@ export default class Pf2 {
   private purseBulk: number;
   private freeActionsAndReactions: Action[];
   private actionsAndActivities: Action[];
+  private hasSpells = false;
 
+  /**
+   * Fill character name field
+   * @param name
+   */
   set characterName(name: string) {
     this.setTextField('CHARACTER_NAME', name);
   }
 
+  /**
+   * Fill player name field
+   * @param name
+   */
   set playerName(name: string) {
     this.setTextField('PLAYER_NAME', name);
   }
 
+  /**
+   * Fill ancestry and heritage field
+   * @param value
+   */
   set ancestryAndHeritage(value: string) {
     this.setTextField('ANCESTRY', value);
   }
 
+  /**
+   * Fill class field
+   * @param value
+   */
   set class(value: string) {
     this.setTextField('CLASS', value);
   }
 
+  /**
+   * Fill class background field
+   * @param value
+   */
   set background(value: string) {
     this.setTextField('BACKGROUND', value);
   }
 
+  /**
+   * Fill class size field
+   * @param value
+   */
   set size(value: string) {
     this.setTextField('SIZE', value);
   }
 
+  /**
+   * Fill ability related fields.
+   * Modifiers are computed from score values.
+   *
+   * All ability mod fields are filled out at once.
+   * E.g. acrobatics DEX modifier and perception WIS modifier.
+   *
+   * Modifier that depend on class or similar are not filled.
+   * E.g. Class DC ability modifier and Spell attack roll ability modifier
+   *
+   * @param scores
+   */
   set abilityScores(scores: AbilityScores) {
     this._abilityScores = scores;
     for (const [ability, value] of this._abilityScores.entries()) {
@@ -74,72 +112,163 @@ export default class Pf2 {
     }
   }
 
+  /**
+   * Fill alignment field
+   * @param value
+   */
   set alignement(value: string) {
     this.setTextField('ALIGNMENT', value);
   }
 
+  /**
+   * Fill traits field.
+   * If an array is given, they will be formmated like this:
+   * ['Trait 1', 'Trait 2'] => 'Trait 1, Trait 2'
+   *
+   * @param value
+   */
   set traits(value: string | string[]) {
     const printable = Array.isArray(value) ? this.formatList(value) : value;
     this.setTextField('TRAITS', printable);
   }
 
+  /**
+   * Fill deity field
+   * @param value
+   */
   set deity(value: string) {
     this.setTextField('DEITY', value);
   }
 
+  /**
+   * Fill level field
+   * @param value
+   */
   set level(value: number) {
     this._level = value;
     this.setTextField('LEVEL', value);
   }
 
-  get level(): number {
-    return this._level;
-  }
-
+  /**
+   * Fill hero points field
+   * @param value
+   */
   set heroPoints(value: number) {
     this.setTextField('HERO_POINTS', value);
   }
 
+  /**
+   * Fill experience points field
+   * @param value
+   */
   set experiencePointsXp(value: number) {
     this.setTextField('EXPERIENCE_POINTS_XP', value);
   }
 
+  /**
+   * Fill Class DC stat block.
+   *
+   * Only ability is required.
+   * Being it dependent on the class.
+   *
+   * Proficiency defaults to Untrained.
+   *
+   * @param value
+   */
   set classDc(value: ClassDC) {
     const modBonus = this._abilityScores.modifier(value.keyAbility);
-    const profBonus = value.proficiency.bonus(this.level);
-    const dcValue = 10 + modBonus + profBonus + value.otherBonus;
+    const profBonus = value.proficiency ? value.proficiency.bonus(this._level) : 0;
+    const dcValue = 10 + modBonus + profBonus + (value.otherBonus || 0);
 
     this.setTextField('DC_VALUE', dcValue);
     this.setTextField('DC_KEY_BONUS', this.formatModifier(modBonus));
-    this.setProficiencyFields('DC_PROF', value.proficiency);
-    this.setTextField('DC_ITEM_BONUS', this.formatModifier(value.otherBonus));
+    if (value.proficiency) {
+      this.setProficiencyFields('DC_PROF', value.proficiency);
+    }
+
+    if (value.otherBonus) {
+      this.setTextField('DC_ITEM_BONUS', this.formatModifier(value.otherBonus));
+    }
   }
 
+  /**
+   * Fill Armor Class stat block
+   *
+   * No fields are required.
+   * Every proficiency defaults to Untrained.
+   * Every bonus or cap is assumed to be 0.
+   *
+   * If character is wearing an armor, `worn` field should contain the
+   * proficiency of the type of armor they are currently wearing.
+   *
+   * @param value
+   */
   set armorClass(value: ArmorClass) {
     const modBonus = this._abilityScores.modifier(Ability.DEX);
-    const profBonus = value.current.bonus(this.level);
+    const profBonus = value.current ? value.current.bonus(this._level) : 0;
     const dexBonus = value.cap ? Math.min(modBonus, value.cap) : modBonus;
-    const armorClassValue = 10 + dexBonus + profBonus + value.otherBonus;
+    const armorClassValue = 10 + dexBonus + profBonus + (value.otherBonus || 0);
 
     this.setTextField('AC_VALUE', armorClassValue);
     this.setTextField('AC_CAP', this.formatModifier(value.cap));
-    this.setProficiencyFields('AC_PROF', value.current);
+
+    if (value.current) {
+      this.setProficiencyFields('AC_PROF', value.current);
+    }
     this.setTextField('AC_ITEM_BONUS', this.formatModifier(value.otherBonus));
 
-    this.setProficiencyFields('AC_PROF_UNARMORED', value.unarmored);
-    this.setProficiencyFields('AC_PROF_LIGHT', value.light);
-    this.setProficiencyFields('AC_PROF_MEDIUM', value.medium);
-    this.setProficiencyFields('AC_PROF_HEAVY', value.heavy);
+    if (value.unarmored) {
+      this.setProficiencyFields('AC_PROF_UNARMORED', value.unarmored);
+    }
+
+    if (value.light) {
+      this.setProficiencyFields('AC_PROF_LIGHT', value.light);
+    }
+
+    if (value.medium) {
+      this.setProficiencyFields('AC_PROF_MEDIUM', value.medium);
+    }
+
+    if (value.heavy) {
+      this.setProficiencyFields('AC_PROF_HEAVY', value.heavy);
+    }
   }
 
+  /**
+   * Fill Fortitude stat block
+   *
+   * No fields are required.
+   * Proficiency defaults to 'Untrained'.
+   * Bonus defaults to 0.
+   *
+   * @param value
+   */
   set fortitude(value: SavingThrow) {
     this.setSavingThrow(value, Ability.CON, 'FORT');
   }
 
+  /**
+   * Fill Reflex stat block
+   *
+   * No fields are required.
+   * Proficiency defaults to 'Untrained'.
+   * Bonus defaults to 0.
+   *
+   * @param value
+   */
   set reflex(value: SavingThrow) {
     this.setSavingThrow(value, Ability.DEX, 'REFL');
   }
 
+  /**
+   * Fill Will stat block
+   *
+   * No fields are required.
+   * Proficiency defaults to 'Untrained'.
+   * Bonus defaults to 0.
+   *
+   * @param value
+   */
   set will(value: SavingThrow) {
     this.setSavingThrow(value, Ability.WIS, 'WILL');
   }
@@ -151,14 +280,19 @@ export default class Pf2 {
     this.setTextField('DYING', value.dying);
     this.setTextField('WOUNDED', value.wounded);
 
-    this.setTextField('RESISTANCES', this.formatList(value.resistances));
-    this.setTextField('CONDITIONS', this.formatList(value.conditions));
+    if (value.resistances) {
+      this.setTextField('RESISTANCES', this.formatList(value.resistances));
+    }
+
+    if (value.conditions) {
+      this.setTextField('CONDITIONS', this.formatList(value.conditions));
+    }
   }
 
   set perception(value: Perception) {
     const modBonus = this._abilityScores.modifier(Ability.WIS);
-    const profBonus = value.proficiency.bonus(this.level);
-    const perceptionValue = modBonus + profBonus + value.otherBonus;
+    const profBonus = value.proficiency ? value.proficiency.bonus(this._level) : 0;
+    const perceptionValue = modBonus + profBonus + (value.otherBonus || 0);
 
     this.setTextField('PERCEPTION_VALUE', perceptionValue);
     this.setProficiencyFields('PERCEPTION_PROF', value.proficiency);
@@ -166,7 +300,9 @@ export default class Pf2 {
       'PERCEPTION_ITEM_BONUS',
       this.formatModifier(value.otherBonus),
     );
-    this.setTextField('SENSES', this.formatList(value.senses));
+
+    const senses = Array.isArray(value.senses) ? value.senses : [value.senses];
+    this.setTextField('SENSES', this.formatList(senses));
   }
 
   set speed(value: number) {
@@ -552,9 +688,9 @@ export default class Pf2 {
 
   set spellAttack(value: SpellAttackDC) {
     const spellKeyBonus = this._abilityScores.modifier(value.key);
-    const spellAttackProfiencyBonus = value.attackProficiency.bonus(this.level);
+    const spellAttackProfiencyBonus = value.attackProficiency.bonus(this._level);
     const spellAttackValue = spellKeyBonus + spellAttackProfiencyBonus;
-    const spellDcProficiencyBonus = value.dcProficiency.bonus(this.level);
+    const spellDcProficiencyBonus = value.dcProficiency.bonus(this._level);
     const spellDcValue = 10 + spellKeyBonus + spellDcProficiencyBonus;
 
     this.setTextField('SPELL_ATTACK_VALUE', spellAttackValue);
@@ -603,29 +739,38 @@ export default class Pf2 {
   }
 
   set cantrips(value: Spell[]) {
+    this.hasSpells = true;
+
     value.slice(0, 7).forEach((cantrip, idx) => {
       this.fillSpell(cantrip, `CAN${idx + 1}`);
     });
   }
 
   set innateSpells(value: Spell[]) {
+    this.hasSpells = true;
+
     value.slice(0, 2).forEach((spell, idx) => {
       this.fillSpell(spell, `INN${idx + 1}`);
     });
   }
 
   set focusPoints(value: FocusPoints) {
+    this.hasSpells = true;
+
     this.setTextField('FOCUS_POINTS_CURRENT', value.current);
     this.setTextField('FOCUS_POINTS_MAXIMUM', value.maximum);
   }
 
   set focusSpells(value: Spell[]) {
+    this.hasSpells = true;
+
     value.slice(0, 4).forEach((spell, idx) => {
       this.fillSpell(spell, `FS${idx + 1}`);
     });
   }
 
   set spells(value: Spell[]) {
+    this.hasSpells = true;
     value.slice(0, 32).forEach((spell, idx) => {
       this.fillSpell(spell, `SPELL${idx + 1}`);
     });
@@ -666,6 +811,21 @@ export default class Pf2 {
     );
   }
 
+  async fill() {
+    this.fillBulk();
+
+    if (this.sketchPngUrl) {
+      const sketch = await fetch(this.sketchPngUrl).then((res) => res.arrayBuffer());
+      await this.importCharacterSketchPng(sketch);
+    }
+
+    this.appendFeatDetails();
+
+    if (!this.hasSpells) {
+      this.removeSpellPage();
+    }
+  }
+
   dataUri(): Promise<string> {
     return this.pdfDoc.saveAsBase64({ dataUri: true });
   }
@@ -684,7 +844,7 @@ export default class Pf2 {
   }
 
   private formatModifier(mod: number | null): string {
-    if (mod === null) {
+    if (mod === null || mod === undefined) {
       return '';
     }
 
@@ -730,7 +890,7 @@ export default class Pf2 {
       return;
     }
 
-    const profBonus = value.bonus(this.level);
+    const profBonus = value.bonus(this._level);
     this.setTextField(
       `${proficiencyName}_BONUS`,
       this.formatModifier(profBonus),
@@ -756,8 +916,8 @@ export default class Pf2 {
     fieldName: string,
   ) {
     const modBonus = this._abilityScores.modifier(keyAbility);
-    const profBonus = value.proficiency.bonus(this.level);
-    const saveValue = modBonus + profBonus + value.otherBonus;
+    const profBonus = value.proficiency ? value.proficiency.bonus(this._level) : 0;
+    const saveValue = modBonus + profBonus + (value.otherBonus || 0);
 
     this.setTextField(`${fieldName}_VALUE`, saveValue);
     this.setProficiencyFields(`${fieldName}_PROF`, value.proficiency);
@@ -769,7 +929,7 @@ export default class Pf2 {
 
   private setSkill(value: Skill, keyAbility: Ability, skillName: string) {
     const modBonus = this._abilityScores.modifier(keyAbility);
-    const profBonus = value.proficiency.bonus(this.level);
+    const profBonus = value.proficiency.bonus(this._level);
     const skillValue =
       modBonus + profBonus + value.otherBonus - value.armorMalus;
 
@@ -784,7 +944,7 @@ export default class Pf2 {
 
   private setStrike(strike: Strike, idx: number) {
     const keyAttackBonus = this._abilityScores.modifier(strike.keyAbility);
-    const proficiencyValue = strike.proficiency.bonus(this.level);
+    const proficiencyValue = strike.proficiency.bonus(this._level);
     const attackValue = keyAttackBonus + proficiencyValue + strike.otherBonus;
 
     this.setTextField(`W${idx}_NAME`, strike.weapon);

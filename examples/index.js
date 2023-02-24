@@ -5,23 +5,20 @@ import {
   Ability,
   AbilityScores,
   Action,
-  ArmorClass,
-  HitPoints,
   Lore,
   Perception,
   Proficiency,
   SaveType,
-  SavingThrow,
   Skill, Spell,
   SpellComponents,
   Strike,
   WeaponProficiencies,
 } from '../src/commons'
-import Charactersheet from '../src/Pf2'
+import CharacterSheet from '../src/Pf2'
 
 async function initBarbarbarian() {
   const object = document.getElementById('pdf');
-  const pdf = await Charactersheet.create();
+  const pdf = await CharacterSheet.create();
 
   // First page
 
@@ -44,21 +41,21 @@ async function initBarbarbarian() {
     proficiency: Proficiency.M,
     otherBonus: null,
   };
-  pdf.armorClass = new ArmorClass(
-    2,
-    Proficiency.M,
-    Proficiency.M,
-    Proficiency.M,
-    Proficiency.U,
-    Proficiency.M,
-    2,
-  );
+  pdf.armorClass = {
+    cap: 2,
+    unarmored: Proficiency.M,
+    light: Proficiency.M,
+    medium: Proficiency.M,
+    current: Proficiency.M,
+    otherBonus: 2,
+  };
 
-  pdf.fortitude = new SavingThrow(Proficiency.L);
-  pdf.reflex = new SavingThrow(Proficiency.M);
-  pdf.will = new SavingThrow(Proficiency.M);
-  pdf.hitPoints = new HitPoints(368, 368);
-  pdf.perception = new Perception(Proficiency.M);
+  pdf.fortitude = { proficiency: Proficiency.L };
+  pdf.reflex = { proficiency: Proficiency.M };
+  pdf.will = { proficiency: Proficiency.M };
+
+  pdf.hitPoints = { max: 368, current: 368 };
+  pdf.perception = { proficiency: Proficiency.M };
   pdf.speed = 30;
   pdf.acrobatics = new Skill(Proficiency.L);
   pdf.arcana = new Skill();
@@ -410,24 +407,15 @@ async function initBarbarbarian() {
     ),
   ];
 
-  pdf.fillBulk();
+  await pdf.fill();
 
-  await pdf.importCharacterSketchPng(
-    await fetch(sketchUrl).then((res) => res.arrayBuffer()),
-  );
-
-  pdf.appendFeatDetails();
-
-  pdf.removeSpellPage();
-
-  pdf.dataUri().then((data) => {
-    object.setAttribute('data', data);
-  });
+  const data = await pdf.dataUri();
+  object.setAttribute('data', data);
 }
 
 async function initSorcerer() {
   const object = document.getElementById('pdf');
-  const pdf = await Pf2.create();
+  const pdf = await CharacterSheet.create();
 
   pdf.characterName = 'Pino';
   pdf.playerName = 'Mikol';
@@ -443,24 +431,13 @@ async function initSorcerer() {
   pdf.heroPoints = 2;
 
   pdf.abilityScores = new AbilityScores(10, 18, 14, 14, 12, 18);
-  pdf.classDc = {
-    keyAbility: Ability.CHA,
-    proficiency: Proficiency.U,
-    otherBonus: null,
-  };
-  pdf.armorClass = new ArmorClass(
-    null,
-    Proficiency.T,
-    Proficiency.U,
-    Proficiency.U,
-    Proficiency.U,
-    Proficiency.T,
-  );
-  pdf.fortitude = new SavingThrow(Proficiency.E);
-  pdf.reflex = new SavingThrow(Proficiency.T);
-  pdf.will = new SavingThrow(Proficiency.E);
-  pdf.hitPoints = new HitPoints(58, 45);
-  pdf.perception = new Perception(Proficiency.T, null, 'Darkvision');
+  pdf.classDc = { keyAbility: Ability.CHA };
+  pdf.armorClass = { unarmored: Proficiency.T };
+  pdf.fortitude = { proficiency: Proficiency.E };
+  pdf.reflex = { proficiency: Proficiency.T };
+  pdf.will = { proficiency: Proficiency.E };
+  pdf.hitPoints = { max: 58, current: 45 };
+  pdf.perception = { proficiency: Proficiency.T, senses: 'Darkvision' };
   pdf.speed = 25;
 
   pdf.meeleeStrikes = [
@@ -521,7 +498,6 @@ async function initSorcerer() {
   pdf.nature = new Skill();
   pdf.occultism = new Skill(Proficiency.T);
   pdf.performance = new Skill();
-  pdf.reflex = new Skill();
   pdf.religion = new Skill();
   pdf.society = new Skill(Proficiency.T);
   pdf.stealth = new Skill(Proficiency.T);
