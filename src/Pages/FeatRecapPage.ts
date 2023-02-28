@@ -1,5 +1,5 @@
 import { PDFDocument, PDFForm, PDFPage, PDFTextField } from 'pdf-lib';
-import { Feat } from "../commons";
+import { Feat } from '../commons';
 
 export default class FeatRecapPage {
   readonly HORIZONTAL_PADDING = 22;

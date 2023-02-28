@@ -14,17 +14,27 @@ import {
   Action,
   ArmorClass,
   ClassDC,
-  Feat, FocusPoints,
-  HitPoints, InventoryItem,
-  Lore, MagicTraditions,
+  Feat,
+  FocusPoints,
+  HitPoints,
+  InventoryItem,
+  Lore,
+  MagicTraditions,
   Perception,
-  Proficiency, Purse,
+  Proficiency,
+  Purse,
   SavingThrow,
-  Skill, Spell, SpellAttackDC, SpellComponents, SpellSlot, SpellSlots, Strike,
-  WeaponProficiencies
-} from "../commons";
+  Skill,
+  Spell,
+  SpellAttackDC,
+  SpellComponents,
+  SpellSlot,
+  SpellSlots,
+  Strike,
+  WeaponProficiencies,
+} from '../commons';
 
-import FeatRecapPage from "../Pages/FeatRecapPage";
+import FeatRecapPage from '../Pages/FeatRecapPage';
 
 export default class Pf2 {
   pdfDoc: PDFDocument;
@@ -177,7 +187,9 @@ export default class Pf2 {
    */
   set classDc(value: ClassDC) {
     const modBonus = this._abilityScores.modifier(value.keyAbility);
-    const profBonus = value.proficiency ? value.proficiency.bonus(this._level) : 0;
+    const profBonus = value.proficiency
+      ? value.proficiency.bonus(this._level)
+      : 0;
     const dcValue = 10 + modBonus + profBonus + (value.otherBonus || 0);
 
     this.setTextField('DC_VALUE', dcValue);
@@ -291,7 +303,9 @@ export default class Pf2 {
 
   set perception(value: Perception) {
     const modBonus = this._abilityScores.modifier(Ability.WIS);
-    const profBonus = value.proficiency ? value.proficiency.bonus(this._level) : 0;
+    const profBonus = value.proficiency
+      ? value.proficiency.bonus(this._level)
+      : 0;
     const perceptionValue = modBonus + profBonus + (value.otherBonus || 0);
 
     this.setTextField('PERCEPTION_VALUE', perceptionValue);
@@ -688,7 +702,9 @@ export default class Pf2 {
 
   set spellAttack(value: SpellAttackDC) {
     const spellKeyBonus = this._abilityScores.modifier(value.key);
-    const spellAttackProfiencyBonus = value.attackProficiency.bonus(this._level);
+    const spellAttackProfiencyBonus = value.attackProficiency.bonus(
+      this._level,
+    );
     const spellAttackValue = spellKeyBonus + spellAttackProfiencyBonus;
     const spellDcProficiencyBonus = value.dcProficiency.bonus(this._level);
     const spellDcValue = 10 + spellKeyBonus + spellDcProficiencyBonus;
@@ -815,7 +831,9 @@ export default class Pf2 {
     this.fillBulk();
 
     if (this.sketchPngUrl) {
-      const sketch = await fetch(this.sketchPngUrl).then((res) => res.arrayBuffer());
+      const sketch = await fetch(this.sketchPngUrl).then((res) =>
+        res.arrayBuffer(),
+      );
       await this.importCharacterSketchPng(sketch);
     }
 
@@ -916,7 +934,9 @@ export default class Pf2 {
     fieldName: string,
   ) {
     const modBonus = this._abilityScores.modifier(keyAbility);
-    const profBonus = value.proficiency ? value.proficiency.bonus(this._level) : 0;
+    const profBonus = value.proficiency
+      ? value.proficiency.bonus(this._level)
+      : 0;
     const saveValue = modBonus + profBonus + (value.otherBonus || 0);
 
     this.setTextField(`${fieldName}_VALUE`, saveValue);

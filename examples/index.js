@@ -9,12 +9,13 @@ import {
   Perception,
   Proficiency,
   SaveType,
-  Skill, Spell,
+  Skill,
+  Spell,
   SpellComponents,
   Strike,
   WeaponProficiencies,
-} from '../src/commons'
-import CharacterSheet from '../src/Pf2'
+} from '../src/commons';
+import CharacterSheet from '../src/Pf2';
 
 async function initBarbarbarian() {
   const object = document.getElementById('pdf');
