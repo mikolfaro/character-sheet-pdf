@@ -9,14 +9,16 @@ import {
   ArmorClass,
   ClassDC,
   Feat,
-  HitPoints, InventoryItem,
+  HitPoints,
+  InventoryItem,
   Lore,
   Perception,
   Proficiency, Purse,
   SavingThrow,
   Shield,
   Skill,
-  Strike, Supplies,
+  Strike,
+  Supplies,
   WeaponProficiencies,
 } from '../commons';
 
@@ -562,6 +564,7 @@ export default class Custom extends Base {
 
     this.form.setTextField(`${skillName}_VALUE`, skillValue);
     this.setProficiencyFields(`${skillName}_PROF`, value.proficiency);
+
     this.form.setTextField(`${skillName}_ITEM_BONUS`, value.otherBonus);
     this.form.setTextField(`${skillName}_ARMOR_BONUS`, value.armorMalus);
   }
