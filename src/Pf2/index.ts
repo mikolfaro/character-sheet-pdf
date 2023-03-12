@@ -149,7 +149,7 @@ export default class Pf2 extends Base {
    */
   set level(value: number) {
     this._level = value;
-    this.form.setTextField('LEVEL', value);
+    this.setTextField('LEVEL', value);
   }
 
   set sketchPngUrl(pngUrl: string) {

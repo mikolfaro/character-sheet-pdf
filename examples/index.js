@@ -291,7 +291,7 @@ async function initSorcerer() {
   pdf.arcana = { proficiency: Proficiency.E };
   pdf.athletics = { otherBonus: 3 };
   pdf.crafting = { proficiency: Proficiency.T };
-  pdf.deception = { otherBonus: 3 };
+  pdf.deception = { otherBonus: 1 }; // Ventriloquist's Ring
   pdf.diplomacy = { proficiency: Proficiency.T };
   pdf.intimidation = { proficiency: Proficiency.T };
   pdf.lore1 = { name: 'Art', proficiency: Proficiency.T };
@@ -351,9 +351,16 @@ async function initSorcerer() {
   pdf.skillFeat6 = { name: 'Magical Shorthand' };
 
   pdf.wornItems = [
+    { name: 'Dagger of Venom', bulk: 0.1 },
     { name: 'Sling', bulk: 0.1 },
-    { name: 'Ring of Zorro', invested: true },
+    { name: 'Ventriloquist\'s Ring', invested: true, value: '60gp' },
   ];
+
+  pdf.readiedItems = [
+    {name: 'Infiltrator Thieves\' Tools', value: '50gp', bulk: 0.1},
+  ];
+
+  pdf.otherItems = [];
 
   pdf.supplies = {
     chalk: 10,
@@ -361,12 +368,12 @@ async function initSorcerer() {
     rope: 50,
     torches: 5,
     water: 1,
-    other: new Map([["Oil", "2 pints"], ["Sling bullets", 20]]),
+    other: new Map([['Infiltrator Replacement Picks', 1], ["Sling bullets", 20]]),
   };
 
   pdf.purse = { silver: 150 };
 
-  pdf.currentBulk = 3;
+  pdf.currentBulk = 0;
 
   pdf.actions = [
     {
@@ -374,6 +381,7 @@ async function initSorcerer() {
       freeAction: true,
       frequency: "once per day",
       trigger: 'You damage a creature with the dagger of venom',
+      page: 'CR.600',
       description: "You poison the creature you hit with dagger venom.\n Dagger Venom (poison); Saving Throw Fortitude DC 21; Maximum Duration 4 rounds. Stage 1 1d8 poison damage and enfeebled 1. ",
     }
   ];

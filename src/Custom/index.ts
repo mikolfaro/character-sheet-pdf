@@ -51,7 +51,7 @@ export default class Custom extends Base {
    * @param name
    */
   set playerName(name: string) {
-    this.form.setTextField('PLAYER_NAME', name);
+    this.setTextField('PLAYER_NAME', name);
   }
 
   /**
@@ -59,7 +59,7 @@ export default class Custom extends Base {
    * @param value
    */
   set ancestryAndHeritage(value: string) {
-    this.form.setTextField('ANCESTRY', value);
+    this.setTextField('ANCESTRY', value);
   }
 
   /**
@@ -67,7 +67,7 @@ export default class Custom extends Base {
    * @param value
    */
   set class(value: string) {
-    this.form.setTextField('CLASS', value);
+    this.setTextField('CLASS', value);
   }
 
   /**
@@ -75,7 +75,7 @@ export default class Custom extends Base {
    * @param value
    */
   set background(value: string) {
-    this.form.setTextField('BACKGROUND', value);
+    this.setTextField('BACKGROUND', value);
   }
 
   /**
@@ -83,7 +83,7 @@ export default class Custom extends Base {
    * @param value
    */
   set size(value: string) {
-    this.form.setTextField('SIZE', value);
+    this.setTextField('SIZE', value);
   }
 
   /**
@@ -101,7 +101,7 @@ export default class Custom extends Base {
   set abilityScores(scores: AbilityScores) {
     this._abilityScores = scores;
     for (const [ability, value] of this._abilityScores.entries()) {
-      this.form.setTextField(`${ability}_SCORE`, value);
+      this.setTextField(`${ability}_SCORE`, value);
       this.setModField(`${ability}_MOD`, scores.modifier(ability));
     }
   }
@@ -111,7 +111,7 @@ export default class Custom extends Base {
    * @param value
    */
   set alignment(value: string) {
-    this.form.setTextField('ALIGNMENT', value);
+    this.setTextField('ALIGNMENT', value);
   }
 
   /**
@@ -122,7 +122,7 @@ export default class Custom extends Base {
    * @param value
    */
   set traits(value: string | string[]) {
-    this.form.setTextField('TRAITS', value);
+    this.setTextField('TRAITS', value);
   }
 
   /**
@@ -130,7 +130,7 @@ export default class Custom extends Base {
    * @param value
    */
   set deity(value: string) {
-    this.form.setTextField('DEITY', value);
+    this.setTextField('DEITY', value);
   }
 
   /**
@@ -139,7 +139,7 @@ export default class Custom extends Base {
    */
   set level(value: number) {
     this._level = value;
-    this.form.setTextField('LEVEL', value);
+    this.setTextField('LEVEL', value);
   }
 
   set sketchPngUrl(pngUrl: string) {
@@ -159,7 +159,7 @@ export default class Custom extends Base {
    * @param value
    */
   set experiencePointsXp(value: number) {
-    this.form.setTextField('EXPERIENCE_POINTS_XP', value);
+    this.setTextField('EXPERIENCE_POINTS_XP', value);
   }
 
   /**
@@ -179,17 +179,14 @@ export default class Custom extends Base {
       : 0;
     const dcValue = 10 + modBonus + profBonus + (value.otherBonus || 0);
 
-    this.form.setTextField('DC_VALUE', dcValue);
-    this.form.setTextField('DC_KEY_BONUS', this.formatModifier(modBonus));
+    this.setTextField('DC_VALUE', dcValue);
+    this.setTextField('DC_KEY_BONUS', this.formatModifier(modBonus));
     if (value.proficiency) {
       this.setProficiencyFields('DC_PROF', value.proficiency);
     }
 
     if (value.otherBonus) {
-      this.form.setTextField(
-        'DC_ITEM_BONUS',
-        this.formatModifier(value.otherBonus),
-      );
+      this.setTextField('DC_ITEM_BONUS', this.formatModifier(value.otherBonus));
     }
   }
 
@@ -273,11 +270,11 @@ export default class Custom extends Base {
   }
 
   set hitPoints(value: HitPoints) {
-    this.form.setTextField('HP_MAX', value.max);
-    this.form.setTextField('HP_CURRENT', value.current);
-    this.form.setTextField('TEMPORARY', value.temporary);
-    this.form.setTextField('DYING', value.dying);
-    this.form.setTextField('WOUNDED', value.wounded);
+    this.setTextField('HP_MAX', value.max);
+    this.setTextField('HP_CURRENT', value.current);
+    this.setTextField('TEMPORARY', value.temporary);
+    this.setTextField('DYING', value.dying);
+    this.setTextField('WOUNDED', value.wounded);
 
     this.form.setTextField('RESISTANCES', value.resistances);
     this.form.setTextField('CONDITIONS', value.conditions);
@@ -290,22 +287,22 @@ export default class Custom extends Base {
       : 0;
     const perceptionValue = modBonus + profBonus + (value.otherBonus || 0);
 
-    this.form.setTextField('PERCEPTION_VALUE', perceptionValue);
+    this.setTextField('PERCEPTION_VALUE', perceptionValue);
     this.setProficiencyFields('PERCEPTION_PROF', value.proficiency);
-    this.form.setTextField(
+    this.setTextField(
       'PERCEPTION_ITEM_BONUS',
       this.formatModifier(value.otherBonus),
     );
 
-    this.form.setTextField('SENSES', value.senses);
+    this.setTextField('SENSES', value.senses);
   }
 
   set speed(value: number) {
-    this.form.setTextField('SPEED', value);
+    this.setTextField('SPEED', value);
   }
 
   set movementNotes(value: string) {
-    this.form.setTextField('MOVEMENT_NOTES', value);
+    this.setTextField('MOVEMENT_NOTES', value);
   }
 
   set acrobatics(value: Skill) {
@@ -417,7 +414,7 @@ export default class Custom extends Base {
   }
 
   set languages(value: string[]) {
-    this.form.setTextField('LANGUAGES', value);
+    this.setTextField('LANGUAGES', value);
   }
 
   set wornItems(items: InventoryItem[]) {
@@ -473,23 +470,13 @@ export default class Custom extends Base {
   }
 
   set actions(actions: Action[]) {
-    this.freeActionsAndReactions = [];
-    this.actionsAndActivities = [];
-
-    actions.forEach((action) => {
-      if (action.freeAction || action.reaction) {
-        this.freeActionsAndReactions.push(action);
-      } else {
-        this.actionsAndActivities.push(action);
-      }
+    console.log(actions);
+    actions.sort((a, b) => {
+      return a.name < b.name ? 0 : 1;
     });
 
-    this.actionsAndActivities.slice(0, 6).forEach((action, idx) => {
-      this.fillAction(action, `AA${idx + 1}`);
-    });
-
-    this.freeActionsAndReactions.slice(0, 6).forEach((action, idx) => {
-      this.fillAction(action, `FA${idx + 1}`);
+    actions.slice(0, 1).forEach((action, idx) => {
+      this.fillAction(action, `A${idx + 1}`);
     });
   }
 
@@ -601,25 +588,32 @@ export default class Custom extends Base {
 
   private setItems(items: InventoryItem[], itemField: string) {
     const itemLines: string[] = [];
-    const investLines: string[] = [];
-    const bulkLine: string[] = [];
+    const investedLines: string[] = [];
+    const bulkLines: string[] = [];
+    const valueLines: string[] = [];
     items.forEach((item) => {
       const quantity = item.quantity ? ` (${item.quantity})` : '';
       itemLines.push(item.name + quantity);
 
-      investLines.push(item.invested ? 'x' : '');
-      bulkLine.push(item.bulk?.toString());
+      investedLines.push(item.invested ? 'x' : '');
+      bulkLines.push(item.bulk?.toString());
+      valueLines.push(item.value?.toString());
     });
 
     this.setTextField(`${itemField}_LIST`, itemLines.join('\n'));
-    this.setTextField(`${itemField}_INVEST`, investLines.join('\n'));
-    this.setTextField(`${itemField}_BULK`, bulkLine.join('\n'));
+    this.setTextField(`${itemField}_INVEST`, investedLines.join('\n'));
+    this.setTextField(`${itemField}_BULK`, bulkLines.join('\n'));
+    this.setTextField(`${itemField}_VALUE`, valueLines.join('\n'));
   }
 
   private fillAction(action: Action, fieldName: string) {
     this.setTextField(`${fieldName}_NAME`, action.name);
     if (action.actions) {
       this.setTextField(`${fieldName}_ACTIONS`, action.actions.toString());
+    } else if (action.freeAction) {
+      this.setTextField(`${fieldName}_ACTIONS`, 'F');
+    } else if (action.reaction) {
+      this.setTextField(`${fieldName}_ACTIONS`, 'R');
     }
 
     if (action.traits) {
@@ -629,13 +623,5 @@ export default class Custom extends Base {
     this.setTextField(`${fieldName}_PAGE`, action.page);
     this.setTextField(`${fieldName}_DESCRIPTION`, action.description);
     this.setTextField(`${fieldName}_TRIGGER`, action.trigger);
-
-    if (action.freeAction) {
-      this.setCheckBox(`${fieldName}_FREEACTION`);
-    }
-
-    if (action.reaction) {
-      this.setCheckBox(`${fieldName}_REACTION`);
-    }
   }
 }
