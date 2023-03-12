@@ -12,8 +12,8 @@ You can take a look at the raw js or clone the project and run `yarn develop` to
 
 ### PT Serif font
 
-Custom character sheet uses `PT Serif`, designed by [ParaType](https://company.paratype.com/pt-sans-pt-serif) 
-and licensed under the [Open Font License](https://scripts.sil.org/cms/scripts/page.php?site_id=nrsi&id=ofl).   
+Custom character sheet uses `PT Serif`, designed by [ParaType](https://company.paratype.com/pt-sans-pt-serif)
+and licensed under the [Open Font License](https://scripts.sil.org/cms/scripts/page.php?site_id=nrsi&id=ofl).
 
 ## Pathfinder 2e Actions font
 

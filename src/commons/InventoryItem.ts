@@ -3,6 +3,5 @@ export default interface InventoryItem {
   quantity?: number;
   bulk?: number;
   value?: number;
-
   invested?: boolean;
 }

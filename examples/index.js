@@ -531,8 +531,8 @@ async function initSorcerer() {
   });
 }
 
-initSorcerer();
-// initBarbarbarian();
+// initSorcerer();
+initBarbarbarian();
 
 document.getElementById('sorcerer').addEventListener('click', (e) => {
   e.preventDefault();

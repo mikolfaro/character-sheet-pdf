@@ -9,14 +9,16 @@ import {
   ArmorClass,
   ClassDC,
   Feat,
-  HitPoints, InventoryItem,
+  HitPoints,
+  InventoryItem,
   Lore,
   Perception,
   Proficiency, Purse,
   SavingThrow,
   Shield,
   Skill,
-  Strike, Supplies,
+  Strike,
+  Supplies,
   WeaponProficiencies,
 } from '../commons';
 
@@ -27,15 +29,11 @@ export default class Custom extends Base {
   private pdfDoc: PDFDocument;
 
   private _abilityScores: AbilityScores;
+  private _actions: Action[];
   private _characterSketchUrl: string;
 
   allFeats: Feat[] = [];
-  private wornItemsBulk: number = 0;
-  private readiedItemsBulk: number = 0;
-  private otherItemsBulk: number = 0;
   private purseBulk: number = 0;
-  private freeActionsAndReactions: Action[];
-  private actionsAndActivities: Action[];
   private hasSpells = false;
 
   /**
@@ -470,13 +468,8 @@ export default class Custom extends Base {
   }
 
   set actions(actions: Action[]) {
-    console.log(actions);
-    actions.sort((a, b) => {
+    this._actions = actions.sort((a, b) => {
       return a.name < b.name ? 0 : 1;
-    });
-
-    actions.slice(0, 1).forEach((action, idx) => {
-      this.fillAction(action, `A${idx + 1}`);
     });
   }
 
@@ -488,6 +481,17 @@ export default class Custom extends Base {
   appendFeatDetails() {
     // const featRecapPage = new FeatRecapPage(this.pdfDoc);
     // featRecapPage.addFeats(this.allFeats);
+  }
+
+  fillActions() {
+    this._actions.slice(0, 40).forEach((action, idx) => {
+      this.fillAction(action, `A${idx + 1}`);
+    });
+
+    const pagesNeeded = Math.max(this._actions.length / 8, 1);
+    for (let i = 0; i < (5 - pagesNeeded); i++) {
+      this.pdfDoc.removePage(3 + pagesNeeded);
+    }
   }
 
   fillBulk() {
@@ -503,6 +507,7 @@ export default class Custom extends Base {
 
   async fill() {
     this.fillBulk();
+    this.fillActions();
 
     if (this._characterSketchUrl) {
       const sketch = await fetch(this._characterSketchUrl).then((res) =>
@@ -562,6 +567,7 @@ export default class Custom extends Base {
 
     this.form.setTextField(`${skillName}_VALUE`, skillValue);
     this.setProficiencyFields(`${skillName}_PROF`, value.proficiency);
+
     this.form.setTextField(`${skillName}_ITEM_BONUS`, value.otherBonus);
     this.form.setTextField(`${skillName}_ARMOR_BONUS`, value.armorMalus);
   }
@@ -607,7 +613,7 @@ export default class Custom extends Base {
   }
 
   private fillAction(action: Action, fieldName: string) {
-    this.setTextField(`${fieldName}_NAME`, action.name);
+    this.setTextField(`${fieldName}_NAME`, action.name, true);
     if (action.actions) {
       this.setTextField(`${fieldName}_ACTIONS`, action.actions.toString());
     } else if (action.freeAction) {
