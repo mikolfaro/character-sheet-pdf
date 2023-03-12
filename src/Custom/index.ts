@@ -13,7 +13,7 @@ import {
   InventoryItem,
   Lore,
   Perception,
-  Proficiency, Purse,
+  Purse,
   SavingThrow,
   Shield,
   Skill,
@@ -473,9 +473,8 @@ export default class Custom extends Base {
 
   set actions(actions: Action[]) {
     console.log(actions);
-    actions.sort((a, b) => {
-      return a.name < b.name ? 0 : 1;
-    });
+    actions.sort((a, b) =>
+      a.name < b.name ? 0 : 1);
 
     actions.slice(0, 1).forEach((action, idx) => {
       this.fillAction(action, `A${idx + 1}`);

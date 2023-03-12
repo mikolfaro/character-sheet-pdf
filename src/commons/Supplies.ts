@@ -5,5 +5,5 @@ export default interface Supplies {
   torches?: number;
   water?: number;
 
-  other?: Map<string, string|number>;
+  other?: Map<string, string | number>;
 }

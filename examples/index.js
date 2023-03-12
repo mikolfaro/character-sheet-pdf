@@ -13,7 +13,7 @@ import {
 
 import CharacterSheet from '../src/Custom';
 
-async function initBarbarbarian() {
+async function initBarbarian() {
   const object = document.getElementById('pdf');
   const pdf = await CharacterSheet.create();
 
@@ -174,13 +174,20 @@ async function initBarbarbarian() {
   };
 
   pdf.wornItems = [
-    { name: 'Retribution Axe', bulk: 2 },
-    { name: 'Spellguard Axe', bulk: 2 },
-    { name: 'Splint Mail', bulk: 3 },
+    { name: 'Retribution Axe', bulk: 2, value: '60gp' },
+    { name: 'Splint Mail', bulk: 3, value: '13gp' },
   ];
-  pdf.otherItems = [{ name: 'Backpack', bulk: -2 }];
+
+  pdf.readiedItems = [{ name: "Healer's Tools", bulk: 1, value: '5gp' }];
+
+  pdf.otherItems = [
+    { name: 'Backpack' },
+    { name: 'Spellguard Axe', bulk: 2, value: '320gp' },
+  ];
 
   pdf.purse = { copper: 0, gold: 5, platinum: 1 };
+
+  pdf.currentBulk = 6;
 
   pdf.actions = [
     { name: 'Administer Aid', actions: 2, traits: ['Medicine', 'Manipulate'] },
@@ -267,7 +274,7 @@ async function initSorcerer() {
         'Versatile S',
       ],
       otherBonus: 1,
-      critical: '1d6 + item bonus persistent bleed damage'
+      critical: '1d6 + item bonus persistent bleed damage',
     },
   ];
 
@@ -277,7 +284,7 @@ async function initSorcerer() {
       keyAbility: Ability.DEX,
       proficiency: Proficiency.T,
       damageDice: '1D6',
-      dmamageType: 'B',
+      damageType: 'B',
       traits: ['Range 50ft', 'Reload 1'],
     },
   ];
@@ -353,11 +360,11 @@ async function initSorcerer() {
   pdf.wornItems = [
     { name: 'Dagger of Venom', bulk: 0.1 },
     { name: 'Sling', bulk: 0.1 },
-    { name: 'Ventriloquist\'s Ring', invested: true, value: '60gp' },
+    { name: "Ventriloquist's Ring", invested: true, value: '60gp' },
   ];
 
   pdf.readiedItems = [
-    {name: 'Infiltrator Thieves\' Tools', value: '50gp', bulk: 0.1},
+    { name: "Infiltrator Thieves' Tools", value: '50gp', bulk: 0.1 },
   ];
 
   pdf.otherItems = [];
@@ -368,7 +375,10 @@ async function initSorcerer() {
     rope: 50,
     torches: 5,
     water: 1,
-    other: new Map([['Infiltrator Replacement Picks', 1], ["Sling bullets", 20]]),
+    other: new Map([
+      ['Infiltrator Replacement Picks', 1],
+      ['Sling bullets', 20],
+    ]),
   };
 
   pdf.purse = { silver: 150 };
@@ -379,11 +389,12 @@ async function initSorcerer() {
     {
       name: 'Activate Dagger of Venom',
       freeAction: true,
-      frequency: "once per day",
+      frequency: 'once per day',
       trigger: 'You damage a creature with the dagger of venom',
       page: 'CR.600',
-      description: "You poison the creature you hit with dagger venom.\n Dagger Venom (poison); Saving Throw Fortitude DC 21; Maximum Duration 4 rounds. Stage 1 1d8 poison damage and enfeebled 1. ",
-    }
+      description:
+        'You poison the creature you hit with dagger venom.\n Dagger Venom (poison); Saving Throw Fortitude DC 21; Maximum Duration 4 rounds. Stage 1 1d8 poison damage and enfeebled 1. ',
+    },
   ];
 
   pdf.spellAttack = {
@@ -531,8 +542,8 @@ async function initSorcerer() {
   });
 }
 
-initSorcerer();
-// initBarbarbarian();
+// initSorcerer();
+initBarbarian();
 
 document.getElementById('sorcerer').addEventListener('click', (e) => {
   e.preventDefault();
@@ -541,5 +552,5 @@ document.getElementById('sorcerer').addEventListener('click', (e) => {
 
 document.getElementById('barbarian').addEventListener('click', (e) => {
   e.preventDefault();
-  initBarbarbarian();
+  initBarbarian();
 });

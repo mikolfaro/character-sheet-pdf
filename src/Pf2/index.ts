@@ -31,7 +31,7 @@ import {
 
 import FeatRecapPage from '../Pages/FeatRecapPage';
 import Form from '../Form';
-import Base from "../Base";
+import Base from '../Base';
 
 export default class Pf2 extends Base {
   private pdfDoc: PDFDocument;

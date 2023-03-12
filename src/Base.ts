@@ -1,8 +1,8 @@
-import Form from "./Form";
-import { Proficiency } from "./commons";
+import Form from './Form';
+import { Proficiency } from './commons';
 
 export default class Base {
-  protected form: Form
+  protected form: Form;
 
   protected _level: number;
 
