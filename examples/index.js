@@ -17,11 +17,11 @@ import {
   Strike,
   WeaponProficiencies,
 } from '../src/commons'
-import Charactersheet from '../src/Pf2'
+import CharacterSheet from '../src/Pf2'
 
 async function initBarbarbarian() {
   const object = document.getElementById('pdf');
-  const pdf = await Charactersheet.create();
+  const pdf = await CharacterSheet.create();
 
   // First page
 
@@ -426,7 +426,7 @@ async function initBarbarbarian() {
 
 async function initSorcerer() {
   const object = document.getElementById('pdf');
-  const pdf = await Pf2.create();
+  const pdf = await CharacterSheet.create();
 
   pdf.characterName = 'Pino';
   pdf.playerName = 'Mikol';
